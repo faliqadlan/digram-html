@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peta Kompilasi Struktur Geologi Ungaran (Lengkap)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .legend-symbol {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-3xl mx-auto">
+        <h1 class="text-xl font-bold text-center text-gray-800 mb-2">Peta Kompilasi Struktur Geologi dan Manifestasi Panas Bumi Ungaran</h1>
+        <p class="text-center text-gray-600 mb-6 text-sm">Diagram skematis yang merepresentasikan empat tipe struktur patahan utama.</p>
+
+        <div class="w-full aspect-w-4 aspect-h-3 bg-gray-50 rounded-lg overflow-hidden border border-gray-200 relative">
+            <svg viewBox="0 0 500 375" class="w-full h-full">
+                <!-- Patahan Regional (NW-SE) -->
+                <line x1="20" y1="300" x2="250" y2="50" stroke="#6B7280" stroke-width="2"/>
+                <line x1="120" y1="350" x2="350" y2="100" stroke="#6B7280" stroke-width="2"/>
+                <line x1="220" y1="370" x2="450" y2="120" stroke="#6B7280" stroke-width="2"/>
+
+                <!-- Patahan Cincin (Batas Kaldera) -->
+                <ellipse cx="250" cy="187.5" rx="160" ry="110" fill="rgba(251, 191, 36, 0.1)" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="8 4"/>
+
+                <!-- Patahan Radial -->
+                <g transform="translate(250, 187.5)">
+                    <line x1="0" y1="0" x2="80" y2="-90" stroke="#059669" stroke-width="1.5" stroke-dasharray="4 2"/>
+                    <line x1="0" y1="0" x2="130" y2="-40" stroke="#059669" stroke-width="1.5" stroke-dasharray="4 2"/>
+                    <line x1="0" y1="0" x2="140" y2="50" stroke="#059669" stroke-width="1.5" stroke-dasharray="4 2"/>
+                    <line x1="0" y1="0" x2="-10" y2="105" stroke="#059669" stroke-width="1.5" stroke-dasharray="4 2"/>
+                    <line x1="0" y1="0" x2="-120" y2="70" stroke="#059669" stroke-width="1.5" stroke-dasharray="4 2"/>
+                    <line x1="0" y1="0" x2="-150" y2="-10" stroke="#059669" stroke-width="1.5" stroke-dasharray="4 2"/>
+                </g>
+
+                <!-- Zona Patahan Lokal Gedongsongo (di dalam kaldera) -->
+                <g transform="translate(260, 150) rotate(22.5)">
+                    <!-- Patahan NNE-SSW -->
+                    <line x1="-30" y1="0" x2="30" y2="0" stroke="#DC2626" stroke-width="1.5"/>
+                    <line x1="-25" y1="10" x2="35" y2="10" stroke="#DC2626" stroke-width="1.5"/>
+                </g>
+                 <g transform="translate(280, 180) rotate(112.5)">
+                    <!-- Patahan WNW-ESE -->
+                    <line x1="-40" y1="0" x2="40" y2="0" stroke="#F97316" stroke-width="1.5"/>
+                    <line x1="-35" y1="10" x2="45" y2="10" stroke="#F97316" stroke-width="1.5"/>
+                </g>
+
+                <!-- Manifestasi Panas Bumi -->
+                <!-- Fumarol (segitiga) -->
+                <path d="M 280 165 l 5 -8 l 5 8 Z" fill="#EF4444" title="Fumarol"/>
+                <path d="M 310 175 l 5 -8 l 5 8 Z" fill="#EF4444" title="Fumarol"/>
+                <path d="M 295 195 l 5 -8 l 5 8 Z" fill="#EF4444" title="Fumarol"/>
+
+                <!-- Mata Air Panas (lingkaran) -->
+                <circle cx="265" cy="185" r="5" fill="#3B82F6" opacity="0.8" title="Mata Air Panas"/>
+                <circle cx="245" cy="205" r="5" fill="#3B82F6" opacity="0.8" title="Mata Air Panas"/>
+                
+                <!-- Anotasi Teks -->
+                <text x="430" y="250" font-size="12" fill="#F59E0B" font-weight="600" text-anchor="middle">Patahan Cincin</text>
+                <text x="430" y="262" font-size="12" fill="#F59E0B" font-weight="600" text-anchor="middle">(Batas Kaldera)</text>
+                
+                <g transform="translate(140, 150)">
+                    <text x="0" y="0" font-size="10" fill="#4A5568">Zona Manifestasi</text>
+                    <text x="0" y="12" font-size="10" fill="#4A5568" font-weight="600">GEDONGSONGO</text>
+                    <line x1="40" y1="20" x2="110" y2="30" stroke="#4A5568" stroke-dasharray="2 2"/>
+                </g>
+
+            </svg>
+        </div>
+        <div class="mt-4 p-4 border-t border-gray-200">
+            <h3 class="font-bold text-lg text-gray-700 mb-3">Legenda</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2 text-sm text-gray-600">
+                <div>
+                    <svg width="20" height="10" class="legend-symbol -ml-1"><line x1="0" y1="5" x2="20" y2="5" stroke="#6B7280" stroke-width="2"/></svg>
+                    <span>Patahan Regional</span>
+                </div>
+                 <div>
+                    <svg width="20" height="10" class="legend-symbol"><ellipse cx="10" cy="5" rx="9" ry="4" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="3 2" fill="none"/></svg>
+                    <span>Patahan Cincin</span>
+                </div>
+                 <div>
+                    <svg width="20" height="10" class="legend-symbol -ml-1"><line x1="0" y1="5" x2="20" y2="5" stroke="#059669" stroke-width="1.5" stroke-dasharray="4 2"/></svg>
+                    <span>Patahan Radial</span>
+                </div>
+                <div>
+                    <svg width="20" height="10" class="legend-symbol"><line x1="0" y1="5" x2="20" y2="5" stroke="#DC2626" stroke-width="1.5"/></svg>
+                    <span>Patahan Lokal (NNE-SSW)</span>
+                </div>
+                <div>
+                    <svg width="20" height="10" class="legend-symbol"><line x1="0" y1="5" x2="20" y2="5" stroke="#F97316" stroke-width="1.5"/></svg>
+                    <span>Patahan Lokal (WNW-ESE)</span>
+                </div>
+                <div>
+                    <svg width="20" height="10" class="legend-symbol"><circle cx="10" cy="5" r="4" fill="#3B82F6" opacity="0.8"/></svg>
+                    <span>Mata Air Panas</span>
+                </div>
+                 <div>
+                    <svg width="20" height="10" class="legend-symbol"><path d="M 8 2 l 4 -6 l 4 6 Z" fill="#EF4444" transform="translate(0, 8)"/></svg>
+                    <span>Fumarol</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

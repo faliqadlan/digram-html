@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabel Perbandingan Teknologi Sensor Gas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .advantage-item {
+            @apply flex items-start;
+        }
+        .advantage-item::before {
+            content: '✓';
+            @apply text-green-500 font-bold mr-2 mt-1;
+        }
+        .disadvantage-item {
+            @apply flex items-start;
+        }
+        .disadvantage-item::before {
+            content: '✗';
+            @apply text-red-500 font-bold mr-2 mt-1;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-slate-800">Perbandingan Teknologi Sensor Gas</h1>
+            <p class="mt-2 text-lg text-slate-600">Analisis komparatif antara sensor IRGA, SA-type, dan MOS untuk pengukuran gas tanah.</p>
+        </div>
+
+        <div class="overflow-x-auto">
+            <div class="inline-block min-w-full align-middle">
+                <div class="overflow-hidden shadow-xl ring-1 ring-black ring-opacity-5 rounded-2xl">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-100">
+                            <tr>
+                                <th scope="col" class="py-4 px-6 text-left text-sm font-bold text-slate-700 uppercase tracking-wider">Teknologi Sensor</th>
+                                <th scope="col" class="py-4 px-6 text-left text-sm font-bold text-slate-700 uppercase tracking-wider">Prinsip Kerja</th>
+                                <th scope="col" class="py-4 px-6 text-left text-sm font-bold text-slate-700 uppercase tracking-wider">Kelebihan</th>
+                                <th scope="col" class="py-4 px-6 text-left text-sm font-bold text-slate-700 uppercase tracking-wider">Kekurangan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-slate-200">
+                            <!-- Baris IRGA -->
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-12 w-12 flex items-center justify-center bg-blue-100 rounded-full">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-bold text-slate-900">IRGA (Infrared Gas Analyzer)</div>
+                                            <div class="text-xs text-slate-500">Target Utama: CO₂</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p class="text-sm text-slate-600">Gas target (misal: CO₂) menyerap radiasi inframerah (IR) pada panjang gelombang spesifik. Sensor mengukur penurunan intensitas IR untuk menentukan konsentrasi gas.</p>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-700">
+                                    <ul class="space-y-2">
+                                        <li class="advantage-item">Akurasi dan selektivitas sangat tinggi.</li>
+                                        <li class="advantage-item">Stabil untuk pengukuran jangka panjang.</li>
+                                        <li class="advantage-item">Tidak mudah terpengaruh kelembapan.</li>
+                                    </ul>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-700">
+                                     <ul class="space-y-2">
+                                        <li class="disadvantage-item">Harga instrumen relatif mahal.</li>
+                                        <li class="disadvantage-item">Ukuran lebih besar dan berat.</li>
+                                        <li class="disadvantage-item">Membutuhkan konsumsi daya lebih tinggi.</li>
+                                    </ul>
+                                </td>
+                            </tr>
+
+                            <!-- Baris SA-type -->
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-12 w-12 flex items-center justify-center bg-amber-100 rounded-full">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2.082 2.082 0 0 1-2.082 2.082H6.654a2.082 2.082 0 0 1-2.082-2.082V8.572a2.082 2.082 0 0 1 2.082-2.082h10.692a2.082 2.082 0 0 1 2.082 2.082v6.856z" /><path stroke-linecap="round" stroke-linejoin="round" d="M9.828 11.486L12 9.314l2.172 2.172" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 14.686V9.314" /></svg>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-bold text-slate-900">SA-type (Detector Tube)</div>
+                                            <div class="text-xs text-slate-500">Target Utama: H₂S</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p class="text-sm text-slate-600">Gas ditarik melewati tabung berisi reagen kimia. Gas target bereaksi dan menyebabkan perubahan warna. Panjang noda warna yang terbentuk menunjukkan konsentrasi.</p>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-700">
+                                    <ul class="space-y-2">
+                                        <li class="advantage-item">Sangat mudah digunakan di lapangan.</li>
+                                        <li class="advantage-item">Tidak memerlukan sumber daya listrik.</li>
+                                        <li class="advantage-item">Biaya per pengukuran sangat rendah.</li>
+                                    </ul>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-700">
+                                    <ul class="space-y-2">
+                                        <li class="disadvantage-item">Hanya untuk sekali pakai.</li>
+                                        <li class="disadvantage-item">Tidak untuk pemantauan kontinu (real-time).</li>
+                                        <li class="disadvantage-item">Akurasi lebih rendah dibanding metode lain.</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            
+                            <!-- Baris MOS -->
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-12 w-12 flex items-center justify-center bg-teal-100 rounded-full">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3" /><path stroke-linecap="round" stroke-linejoin="round" d="M7.86 7.86a2.5 2.5 0 1 0 0 8.28 2.5 2.5 0 0 0 0-8.28z" /><path stroke-linecap="round" stroke-linejoin="round" d="M16.14 7.86a2.5 2.5 0 1 0 0 8.28 2.5 2.5 0 0 0 0-8.28z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" /></svg>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-bold text-slate-900">MOS (Metal Oxide Semiconductor)</div>
+                                            <div class="text-xs text-slate-500">Target: Berbagai Gas</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p class="text-sm text-slate-600">Gas yang teradsorpsi di permukaan semikonduktor oksida logam (misalnya SnO₂) mengubah resistansi listriknya. Perubahan resistansi ini diukur dan dikorelasikan dengan konsentrasi gas.</p>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-700">
+                                    <ul class="space-y-2">
+                                        <li class="advantage-item">Biaya sensor sangat rendah.</li>
+                                        <li class="advantage-item">Ukuran sangat kecil dan ringkas.</li>
+                                        <li class="advantage-item">Waktu respons cepat dan sensitivitas tinggi.</li>
+                                    </ul>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-700">
+                                    <ul class="space-y-2">
+                                        <li class="disadvantage-item">Selektivitas rendah (sensitif terhadap banyak gas).</li>
+                                        <li class="disadvantage-item">Sangat dipengaruhi suhu dan kelembapan.</li>
+                                        <li class="disadvantage-item">Membutuhkan kalibrasi secara berkala.</li>
+                                    </ul>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

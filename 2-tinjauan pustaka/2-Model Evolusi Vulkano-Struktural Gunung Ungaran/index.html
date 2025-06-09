@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Evolusi Vulkano-Struktural Gunung Ungaran</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 antialiased">
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <div class="bg-white p-6 rounded-2xl shadow-lg">
+            <h1 class="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-2">Model Skematik Evolusi Vulkano-Struktural Gunung Ungaran</h1>
+            <p class="text-center text-sm sm:text-base text-gray-600 mb-8">Diagram ini mengilustrasikan tiga tahapan utama evolusi Gunung Ungaran secara konseptual.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Tahap 1: Pembentukan Ungaran Tua -->
+                <div class="flex flex-col items-center">
+                    <div class="w-full aspect-square bg-sky-100 rounded-lg overflow-hidden border border-gray-200">
+                        <svg viewBox="0 0 200 200" class="w-full h-full">
+                            <!-- Batuan Dasar -->
+                            <rect y="150" width="200" height="50" fill="#E2D6C8"/>
+                            <text x="100" y="175" font-size="10" text-anchor="middle" fill="#6B4F35" font-weight="500">Kerak Bumi</text>
+                            
+                            <!-- Tubuh Gunung Api Tua -->
+                            <path d="M 50 150 Q 100 50, 150 150 Z" fill="#967969"/>
+
+                            <!-- Kantung Magma -->
+                             <ellipse cx="100" cy="220" rx="40" ry="25" fill="#EF4444"/>
+                        </svg>
+                    </div>
+                    <div class="text-center mt-4">
+                        <h2 class="font-bold text-gray-700">Tahap 1: Pembentukan Ungaran Tua</h2>
+                        <p class="text-sm text-gray-500 mt-1">Aktivitas vulkanik membangun tubuh gunung api strato yang besar.</p>
+                    </div>
+                </div>
+
+                <!-- Tahap 2: Keruntuhan & Pembentukan Kaldera -->
+                <div class="flex flex-col items-center">
+                    <div class="w-full aspect-square bg-sky-100 rounded-lg overflow-hidden border border-gray-200">
+                        <svg viewBox="0 0 200 200" class="w-full h-full">
+                            <!-- Batuan Dasar -->
+                            <rect y="150" width="200" height="50" fill="#E2D6C8"/>
+                            <text x="100" y="175" font-size="10" text-anchor="middle" fill="#6B4F35" font-weight="500">Kerak Bumi</text>
+
+                            <!-- Sisa Gunung Api & Kaldera -->
+                            <path d="M 0 150 L 50 150 L 70 120 L 80 150 L 120 150 L 130 120 L 150 150 L 200 150 V 200 H 0 Z" fill="#967969"/>
+                            <rect x="80" y="150" width="40" height="5" fill="#D1C0B1"/>
+                            
+                             <!-- Patahan Cincin -->
+                            <line x1="78" y1="125" x2="78" y2="170" stroke="#4A5568" stroke-width="1.5" stroke-dasharray="3 2"/>
+                            <line x1="122" y1="125" x2="122" y2="170" stroke="#4A5568" stroke-width="1.5" stroke-dasharray="3 2"/>
+                            
+                            <!-- Panah keruntuhan -->
+                            <defs>
+                                <marker id="arrow-down" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#DC2626"></path>
+                                </marker>
+                            </defs>
+                            <line x1="100" y1="100" x2="100" y2="140" stroke="#DC2626" stroke-width="2" marker-end="url(#arrow-down)" />
+                             <ellipse cx="100" cy="220" rx="40" ry="25" fill="#F87171" opacity="0.7"/>
+                        </svg>
+                    </div>
+                    <div class="text-center mt-4">
+                        <h2 class="font-bold text-gray-700">Tahap 2: Keruntuhan & Kaldera</h2>
+                        <p class="text-sm text-gray-500 mt-1">Letusan besar atau keruntuhan sektor membentuk depresi kaldera dan patahan cincin.</p>
+                    </div>
+                </div>
+
+                <!-- Tahap 3: Aktivitas Ungaran Muda -->
+                <div class="flex flex-col items-center">
+                    <div class="w-full aspect-square bg-sky-100 rounded-lg overflow-hidden border border-gray-200">
+                        <svg viewBox="0 0 200 200" class="w-full h-full">
+                            <!-- Batuan Dasar -->
+                            <rect y="150" width="200" height="50" fill="#E2D6C8"/>
+                            <text x="100" y="175" font-size="10" text-anchor="middle" fill="#6B4F35" font-weight="500">Kerak Bumi</text>
+                            
+                            <!-- Dinding Kaldera -->
+                            <path d="M 0 150 L 50 150 L 70 120 L 80 150 L 120 150 L 130 120 L 150 150 L 200 150 V 200 H 0 Z" fill="#A89A8E" opacity="0.7"/>
+                            
+                            <!-- Gunung Api Muda -->
+                            <path d="M 85 150 Q 100 110, 115 150 Z" fill="#BF9B89"/>
+
+                             <!-- Saluran Magma -->
+                            <path d="M 95 180 C 95 160, 105 160, 105 180 L 105 150 L 95 150 Z" fill="#EF4444" />
+                            <ellipse cx="100" cy="220" rx="40" ry="25" fill="#EF4444"/>
+                            
+                            <!-- Fumarol/Uap -->
+                            <path d="M 115 145 C 117 140, 119 135, 121 140 C 123 135, 125 140, 127 135" stroke="#E5E7EB" stroke-width="1.5" fill="none" opacity="0.8"/>
+
+                        </svg>
+                    </div>
+                    <div class="text-center mt-4">
+                        <h2 class="font-bold text-gray-700">Tahap 3: Aktivitas Ungaran Muda</h2>
+                        <p class="text-sm text-gray-500 mt-1">Kerucut baru terbentuk di dalam kaldera, dengan sistem panas bumi yang aktif.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
