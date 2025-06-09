@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metode Konsentrasi Dinamis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .flow-arrow {
+            animation: flow 2s linear infinite;
+        }
+        @keyframes flow {
+            from {
+                stroke-dashoffset: 20;
+            }
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4">
+
+    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg max-w-4xl w-full border border-gray-200">
+        
+        <!-- Judul Diagram -->
+        <h1 class="text-xl md:text-2xl font-bold text-center text-gray-800 mb-2">
+            Diagram 2: Metode Konsentrasi Dinamis (Dynamic Concentration Method)
+        </h1>
+        <p class="text-center text-gray-500 mb-6 md:mb-8">
+            Visualisasi pengukuran gas *in-situ* dengan metode pemompaan aktif.
+        </p>
+
+        <!-- Kontainer Utama untuk Diagram -->
+        <div class="relative w-full aspect-[4/3] bg-white rounded-lg p-4 border border-gray-200">
+            <svg id="dynamic-concentration-diagram" class="w-full h-full" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+                
+                <!-- Definisi Pola dan Marker -->
+                <defs>
+                    <pattern id="soilTexture" patternUnits="userSpaceOnUse" width="10" height="10">
+                        <path d="M-1,1 l2,-2 M0,10 l10,-10 M9,11 l2,-2" stroke="#A16207" stroke-width="0.8" />
+                        <circle cx="5" cy="5" r="1" fill="#854d0e" />
+                    </pattern>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#1d4ed8" />
+                    </marker>
+                </defs>
+
+                <!-- Layer Tanah dengan Kedalaman -->
+                <rect x="0" y="200" width="800" height="400" fill="#fef3c7" />
+                <rect x="0" y="200" width="800" height="400" fill="url(#soilTexture)" opacity="0.15"/>
+                <line x1="0" y1="200" x2="800" y2="200" stroke="#a16207" stroke-width="2"/>
+                <text x="50" y="190" font-size="16" text-anchor="start" fill="#854d0e" font-weight="600">Permukaan Tanah</text>
+
+                <!-- In-situ Probe -->
+                <g id="probe-group">
+                    <rect x="200" y="200" width="20" height="250" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
+                    <!-- Lubang-lubang di probe -->
+                    <circle cx="210" cy="430" r="3" fill="#9ca3af"/>
+                    <circle cx="210" cy="415" r="3" fill="#9ca3af"/>
+                    <circle cx="210" cy="400" r="3" fill="#9ca3af"/>
+                    <text x="190" y="320" font-size="18" text-anchor="end" fill="#1f2937" font-weight="600" transform="rotate(-90, 190, 320)">In-situ Probe</text>
+                    <!-- Garis kedalaman -->
+                    <line x1="230" y1="200" x2="230" y2="450" stroke="black" stroke-dasharray="4" />
+                    <line x1="225" y1="200" x2="235" y2="200" stroke="black" />
+                    <line x1="225" y1="450" x2="235" y2="450" stroke="black" />
+                    <text x="240" y="325" font-size="14">50 cm</text>
+                </g>
+
+                <!-- Saluran Hisap dan Peralatan -->
+                <g id="equipment-group">
+                    <!-- Saluran Hisap (Suction Tube) -->
+                    <path d="M 210 200 Q 210 120, 300 120 L 400 120" stroke="#4b5563" stroke-width="4" fill="none" marker-end="url(#arrowhead)"/>
+
+                    <!-- Pompa -->
+                    <rect x="400" y="95" width="80" height="50" rx="5" fill="#d1d5db" stroke="#4b5563" stroke-width="2"/>
+                    <circle cx="440" cy="120" r="15" fill="none" stroke="#4b5563" stroke-width="2"/>
+                    <path d="M 440 105 L 440 120 L 455 120" fill="none" stroke="#4b5563" stroke-width="2"/>
+                    <text x="440" y="85" font-size="16" text-anchor="middle" font-weight="600">Pump</text>
+                    <text x="440" y="160" font-size="14" text-anchor="middle" fill="#374151">Φ = 0.8 L/min</text>
+
+                    <!-- Selang dari Pompa ke Analyzer -->
+                    <path d="M 480 120 L 550 120" stroke="#4b5563" stroke-width="4" fill="none" marker-end="url(#arrowhead)"/>
+                    
+                    <!-- Analyzer -->
+                    <rect x="550" y="80" width="180" height="80" rx="5" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                    <rect x="560" y="90" width="100" height="60" fill="white" stroke="#93c5fd"/>
+                    <text x="630" y="70" font-size="16" text-anchor="middle" font-weight="600">Gas Analyzer</text>
+                    <text x="630" y="175" font-size="14" text-anchor="middle" fill="#1e3a8a">Konsentrasi Dinamis (C<tspan baseline-shift="sub" font-size="12">d</tspan>) diukur</text>
+
+                </g>
+
+                <!-- Aliran Gas dari Tanah -->
+                <g id="gas-intake-flow">
+                    <path d="M 150 400 Q 180 410 207 415" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead)"/>
+                    <path d="M 270 400 Q 240 410 213 415" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead)"/>
+                    <path d="M 160 440 Q 185 435 207 430" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead)"/>
+                    <text x="150" y="460" font-size="14" fill="#1e3a8a">Gas tanah dihisap secara aktif</text>
+                </g>
+
+            </svg>
+        </div>
+        
+        <!-- Teks Anotasi Bawah -->
+        <footer class="mt-4 text-center">
+            <p class="text-gray-600 italic">
+                Mengukur konsentrasi gas dalam aliran yang stabil setelah dihisap dari kedalaman tanah tertentu.
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

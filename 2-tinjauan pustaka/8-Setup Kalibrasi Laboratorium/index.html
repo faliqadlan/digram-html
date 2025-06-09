@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Kalibrasi Laboratorium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4">
+
+    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg max-w-4xl w-full border border-gray-200">
+        
+        <!-- Judul Diagram -->
+        <h1 class="text-xl md:text-2xl font-bold text-center text-gray-800 mb-2">
+            Setup Kalibrasi Laboratorium (Camarda, 2006)
+        </h1>
+        <p class="text-center text-gray-500 mb-6 md:mb-8">
+            Visualisasi setup eksperimental untuk validasi *Dynamic Concentration Method*.
+        </p>
+
+        <!-- Kontainer Utama untuk Diagram -->
+        <div class="relative w-full aspect-[4/3] bg-white rounded-lg p-4 border border-gray-200">
+            <svg id="calibration-setup-diagram" class="w-full h-full" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+                
+                <!-- Definisi -->
+                <defs>
+                    <pattern id="soilTextureLab" patternUnits="userSpaceOnUse" width="10" height="10">
+                        <path d="M-1,1 l2,-2 M0,10 l10,-10 M9,11 l2,-2" stroke="#A16207" stroke-width="0.5" />
+                        <circle cx="5" cy="5" r="0.8" fill="#854d0e" />
+                    </pattern>
+                    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#1e40af" />
+                    </marker>
+                    <linearGradient id="cylinderGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#d1d5db;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#f9fafb;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#d1d5db;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+
+                <!-- Silinder Uji Raksasa -->
+                <g id="soil-column">
+                    <!-- Badan Silinder -->
+                    <rect x="300" y="80" width="200" height="450" fill="url(#cylinderGradient)" stroke="#9ca3af" stroke-width="2" />
+                    <!-- Isi Tanah -->
+                    <rect x="300" y="90" width="200" height="430" fill="url(#soilTextureLab)" opacity="0.4"/>
+                    <!-- Elips Atas & Bawah (Efek 3D) -->
+                    <ellipse cx="400" cy="80" rx="100" ry="25" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
+                    <ellipse cx="400" cy="530" rx="100" ry="25" fill="#d1d5db" stroke="#9ca3af" stroke-width="2"/>
+                    <text x="400" y="40" font-size="16" text-anchor="middle" font-weight="600">Soil Column</text>
+                    <text x="400" y="60" font-size="14" text-anchor="middle" fill="#4b5563">with known permeability (k)</text>
+                </g>
+
+                <!-- Sumber Gas Bawah -->
+                <g id="gas-source">
+                    <!-- Tabung Gas -->
+                    <rect x="80" y="450" width="40" height="100" rx="10" fill="#059669" stroke="#047857" stroke-width="2"/>
+                    <rect x="90" y="440" width="20" height="20" fill="#a1a1aa"/>
+                    <!-- Pipa ke Silinder -->
+                    <path d="M 120 490 L 300 490" stroke="#4b5563" stroke-width="4" fill="none" marker-end="url(#arrowhead-blue)"/>
+                    <text x="80" y="565" font-size="14" text-anchor="start" font-weight="600">Known CO₂ Flux Source</text>
+                    <text x="190" y="510" font-size="16" font-weight="bold" fill="#047857">(J<tspan baseline-shift="sub">CO₂</tspan>)</text>
+                </g>
+
+                <!-- Sistem Probe & Analyzer di Dalam Silinder -->
+                <g id="internal-probe-system">
+                    <!-- Probe -->
+                    <rect x="395" y="250" width="10" height="150" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.5"/>
+                    <circle cx="400" cy="380" r="2" fill="#6b7280"/>
+                    <circle cx="400" cy="390" r="2" fill="#6b7280"/>
+                    
+                    <!-- Saluran Hisap Internal -->
+                    <path d="M 400 250 Q 400 200, 480 200 L 580 200" stroke="#4b5563" stroke-width="3" fill="none"/>
+                    
+                    <!-- Peralatan di Luar -->
+                    <!-- Pompa -->
+                    <rect x="580" y="185" width="50" height="30" rx="3" fill="#d1d5db" stroke="#4b5563"/>
+                    <text x="605" y="180" font-size="12" text-anchor="middle">Pump (Φ)</text>
+                    <!-- Selang ke Analyzer -->
+                    <path d="M 630 200 L 680 200" stroke="#4b5563" stroke-width="3" fill="none" marker-end="url(#arrowhead-blue)"/>
+                    <!-- Analyzer -->
+                    <rect x="680" y="175" width="100" height="50" rx="3" fill="#dbeafe" stroke="#1e40af"/>
+                    <text x="730" y="170" font-size="12" text-anchor="middle">Analyzer</text>
+                    <text x="730" y="240" font-size="16" text-anchor="middle" font-weight="bold" fill="#1e40af">Result: C<tspan baseline-shift="sub">d</tspan></text>
+                </g>
+
+                <!-- Sampling Ports -->
+                <g id="sampling-ports" fill="#3f3f46" stroke="black" stroke-width="1">
+                    <text x="530" y="150" font-size="14" font-weight="600">Sampling Ports</text>
+                    <path d="M 500 180 L 550 160" stroke="#3f3f46" stroke-width="1"/>
+                    <!-- Port 1 -->
+                    <rect x="500" y="175" width="20" height="10"/>
+                    <line x1="510" y1="180" x2="525" y2="180"/>
+                    <!-- Port 2 -->
+                    <rect x="500" y="275" width="20" height="10"/>
+                    <line x1="510" y1="280" x2="525" y2="280"/>
+                    <!-- Port 3 -->
+                    <rect x="500" y="375" width="20" height="10"/>
+                    <line x1="510" y1="380" x2="525" y2="380"/>
+                </g>
+                
+            </svg>
+        </div>
+        
+        <!-- Teks Anotasi Bawah -->
+        <footer class="mt-4 text-center">
+            <p class="text-gray-600 italic font-semibold">
+                Setup laboratorium untuk menurunkan persamaan empiris: J<tspan baseline-shift="sub">CO₂</tspan> = f(C<tspan baseline-shift="sub">d</tspan>, k)
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
