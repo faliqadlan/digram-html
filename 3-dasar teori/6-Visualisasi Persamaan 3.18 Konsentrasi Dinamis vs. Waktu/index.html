@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisasi Persamaan 3.18: Konsentrasi Dinamis vs. Waktu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .panel {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        canvas {
+            border-radius: 0.5rem;
+            border: 1px solid #cbd5e1;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex items-center justify-center min-h-screen">
+
+    <div class="panel p-4 sm:p-6 w-full max-w-5xl">
+        <h1 class="text-xl md:text-2xl font-bold text-center text-slate-800 mb-2">Visualisasi Persamaan 3.18: Mencapai Konsentrasi Stabil</h1>
+        <p class="text-center text-slate-600 mb-6 text-sm">Mengapa konsentrasi terukur (C<sub>d</sub>) menjadi konstan seiring waktu?</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Panel Kiri: Visualisasi Geologis -->
+            <div>
+                <h3 class="font-semibold text-center text-slate-700 mb-2">Proses Fisik Alat Ukur</h3>
+                <div class="w-full aspect-square relative">
+                    <canvas id="geo-canvas"></canvas>
+                </div>
+            </div>
+            <!-- Panel Kanan: Grafik Hasil -->
+            <div>
+                <h3 class="font-semibold text-center text-slate-700 mb-2">Grafik C<sub>d</sub> vs. Waktu (t)</h3>
+                <div class="w-full aspect-square relative">
+                    <canvas id="graph-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kontrol dan Info -->
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div class="text-center">
+                <button id="start-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all">
+                    Mulai Simulasi
+                </button>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-lg border text-center">
+                <div class="text-sm text-slate-500">Waktu (t): <span id="time-display" class="font-semibold text-slate-800">0.0 s</span></div>
+                <div class="text-sm text-slate-500">Konsentrasi (C<sub>d</sub>): <span id="cd-display" class="font-semibold text-slate-800">0.00</span></div>
+            </div>
+        </div>
+        
+        <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg text-blue-800 text-sm">
+             <strong>Penjelasan:</strong> Konsentrasi (C<sub>d</sub>) menjadi stabil karena sistem mencapai kesetimbangan. Laju masuknya gas tanah ke dalam ruang sensor seimbang dengan laju keluarnya gas campuran. Suku eksponensial `e<sup>-t</sup>` dalam persamaan menjadi nol seiring waktu, menghilangkan komponen transien dan menyisakan nilai yang konstan.
+        </div>
+
+    </div>
+
+    <script>
+        // --- PENGATURAN UMUM ---
+        const geoCanvas = document.getElementById('geo-canvas');
+        const geoCtx = geoCanvas.getContext('2d');
+        const graphCanvas = document.getElementById('graph-canvas');
+        const graphCtx = graphCanvas.getContext('2d');
+        const startBtn = document.getElementById('start-btn');
+        const timeDisplay = document.getElementById('time-display');
+        const cdDisplay = document.getElementById('cd-display');
+
+        // --- Variabel Simulasi ---
+        let particles = [];
+        let graphPoints = [];
+        let simulationState = {
+            isRunning: false,
+            startTime: 0,
+            animationFrameId: null,
+            maxTime: 20 // detik
+        };
+        // Parameter Persamaan 3.18
+        const params = {
+            phi_s: 0.1, // Laju aliran dari tanah (L/s)
+            phi_p: 0.5, // Laju aliran pompa (L/s)
+            C_s: 1.0,   // Konsentrasi di tanah (unit arbitrer)
+            V: 0.2      // Volume ruang sensor (L)
+        };
+        const STEADY_STATE_CD = (params.phi_s / params.phi_p) * params.C_s;
+
+        // --- FUNGSI RESIZE & SETUP ---
+        function resizeCanvases() {
+            [geoCanvas, graphCanvas].forEach(canvas => {
+                const container = canvas.parentElement;
+                const size = Math.min(container.offsetWidth, container.offsetHeight);
+                canvas.width = size;
+                canvas.height = size;
+            });
+        }
+
+        // --- LOGIKA SIMULASI GEOLOGI (PANEL KIRI) ---
+        class Particle {
+            constructor(type) {
+                this.type = type; // 'soil' atau 'air'
+                this.x = 0;
+                this.y = 0;
+                this.progress = 0;
+                this.path = this.getPath();
+                this.speed = Math.random() * 0.2 + 0.1;
+            }
+            getPath() {
+                const w = geoCanvas.width;
+                const h = geoCanvas.height;
+                if (this.type === 'soil') {
+                    return [{x: w*0.4, y:h}, {x:w*0.45, y:h*0.7}, {x:w*0.5, y:h*0.65}, {x:w*0.5, y:h*0.4}];
+                } else { // air
+                    return [{x: w*0.8, y:h*0.6}, {x:w*0.6, y:h*0.62}, {x:w*0.5, y:h*0.65}, {x:w*0.5, y:h*0.4}];
+                }
+            }
+            update(delta) {
+                this.progress += this.speed * delta;
+                if (this.progress > 1) this.progress = 1;
+                const pointIndex = Math.floor(this.progress * (this.path.length - 1));
+                const p1 = this.path[pointIndex];
+                const p2 = this.path[pointIndex + 1] || p1;
+                const segmentProgress = (this.progress - (pointIndex / (this.path.length-1))) * (this.path.length-1);
+                this.x = p1.x + (p2.x - p1.x) * segmentProgress;
+                this.y = p1.y + (p2.y - p1.y) * segmentProgress;
+            }
+            draw() {
+                geoCtx.beginPath();
+                geoCtx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                geoCtx.fillStyle = this.type === 'soil' ? '#ef4444' : '#3b82f6';
+                geoCtx.fill();
+            }
+        }
+
+        function drawGeoBackground() {
+            const w = geoCanvas.width;
+            const h = geoCanvas.height;
+            geoCtx.clearRect(0, 0, w, h);
+            
+            // Tanah
+            geoCtx.fillStyle = '#d2b48c';
+            geoCtx.fillRect(0, h * 0.7, w, h * 0.3);
+            geoCtx.fillStyle = '#855a1e';
+            geoCtx.font = 'bold 14px Inter';
+            geoCtx.textAlign = 'center';
+            geoCtx.fillText('Tanah', w/2, h*0.85);
+
+            // Probe & Sensor
+            geoCtx.fillStyle = '#a0aec0';
+            geoCtx.fillRect(w*0.5 - 5, h*0.4, 10, h*0.35); // Probe
+            geoCtx.fillRect(w*0.3, h*0.3, w*0.4, h*0.1); // Sensor chamber
+            geoCtx.fillStyle = '#cbd5e0';
+            geoCtx.font = '12px Inter';
+            geoCtx.fillText('Ruang Sensor', w/2, h*0.36);
+        }
+
+        // --- LOGIKA GRAFIK (PANEL KANAN) ---
+        function drawGraph() {
+            const w = graphCanvas.width;
+            const h = graphCanvas.height;
+            const margin = { top: 20, right: 20, bottom: 40, left: 40 };
+            const plotW = w - margin.left - margin.right;
+            const plotH = h - margin.top - margin.bottom;
+            
+            graphCtx.clearRect(0,0,w,h);
+            graphCtx.fillStyle = '#f8fafc';
+            graphCtx.fillRect(0,0,w,h);
+
+            // Sumbu
+            graphCtx.strokeStyle = '#94a3b8';
+            graphCtx.lineWidth = 2;
+            graphCtx.beginPath();
+            graphCtx.moveTo(margin.left, margin.top);
+            graphCtx.lineTo(margin.left, h - margin.bottom);
+            graphCtx.lineTo(w - margin.right, h - margin.bottom);
+            graphCtx.stroke();
+
+            // Label Sumbu
+            graphCtx.fillStyle = '#475569';
+            graphCtx.font = '12px Inter';
+            graphCtx.textAlign = 'center';
+            graphCtx.fillText('Waktu (t)', w/2, h - 10);
+            graphCtx.save();
+            graphCtx.translate(15, h/2);
+            graphCtx.rotate(-Math.PI/2);
+            graphCtx.fillText('Konsentrasi C_d', 0, 0);
+            graphCtx.restore();
+
+            // Plot Kurva
+            graphCtx.strokeStyle = '#1d4ed8';
+            graphCtx.lineWidth = 3;
+            graphCtx.beginPath();
+            graphPoints.forEach((p, i) => {
+                const x = margin.left + (p.t / simulationState.maxTime) * plotW;
+                const y = h - margin.bottom - (p.cd / (STEADY_STATE_CD * 1.1)) * plotH;
+                if (i === 0) {
+                    graphCtx.moveTo(x, y);
+                } else {
+                    graphCtx.lineTo(x, y);
+                }
+            });
+            graphCtx.stroke();
+        }
+
+        // --- KONTROL & LOOP UTAMA ---
+        function calculateCd(t) {
+             const term1 = params.phi_s / params.phi_p * params.C_s;
+             const term2 = 1 - ((params.phi_s - params.phi_p) / params.phi_s) * Math.exp(-(params.phi_p / params.V) * t);
+             return term1 * term2;
+        }
+
+        function mainLoop() {
+            if (!simulationState.isRunning) return;
+
+            const elapsedTime = (Date.now() - simulationState.startTime) / 1000;
+            
+            if (elapsedTime > simulationState.maxTime) {
+                stopSimulation();
+                return;
+            }
+            
+            const currentCd = calculateCd(elapsedTime);
+            timeDisplay.textContent = `${elapsedTime.toFixed(1)} s`;
+            cdDisplay.textContent = currentCd.toFixed(2);
+            graphPoints.push({ t: elapsedTime, cd: currentCd });
+
+            // Update partikel
+            if (Math.random() < 0.2) particles.push(new Particle('soil'));
+            if (Math.random() < 0.2) particles.push(new Particle('air'));
+            
+            drawGeoBackground();
+            particles.forEach(p => { p.update(1/60); p.draw(); });
+            particles = particles.filter(p => p.progress < 1);
+            
+            drawGraph();
+
+            simulationState.animationFrameId = requestAnimationFrame(mainLoop);
+        }
+
+        function startSimulation() {
+            particles = [];
+            graphPoints = [];
+            simulationState.startTime = Date.now();
+            simulationState.isRunning = true;
+            startBtn.textContent = 'Reset Simulasi';
+            mainLoop();
+        }
+        
+        function stopSimulation() {
+             simulationState.isRunning = false;
+             cancelAnimationFrame(simulationState.animationFrameId);
+             startBtn.textContent = 'Mulai Simulasi';
+        }
+
+        startBtn.addEventListener('click', () => {
+            if (simulationState.isRunning) {
+                stopSimulation();
+            } else {
+                startSimulation();
+            }
+        });
+        
+        // Inisialisasi awal
+        window.addEventListener('resize', () => {
+            resizeCanvases();
+            drawGeoBackground();
+            drawGraph();
+        });
+        resizeCanvases();
+        drawGeoBackground();
+        drawGraph();
+    </script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisasi Geologis Fluks Gas (2D)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .panel {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        canvas {
+            border-radius: 0.5rem;
+            border: 1px solid #cbd5e1;
+        }
+        .control-group {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="panel p-4 sm:p-6 w-full max-w-4xl">
+        <h1 class="text-xl md:text-2xl font-bold text-center text-slate-800 mb-2">Visualisasi Geologis Fluks Gas (Tampang Lintang 2D)</h1>
+        <p class="text-center text-slate-600 mb-6 text-sm">Gunakan slider untuk mengatur permeabilitas tanah dan konsentrasi sumber untuk melihat pengaruhnya pada fluks gas.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-2">
+                <div class="w-full aspect-square relative">
+                    <canvas id="flux-canvas" class="w-full h-full"></canvas>
+                </div>
+            </div>
+            <div class="md:col-span-1 p-4 bg-slate-50 rounded-lg border">
+                 <h2 class="text-lg font-semibold text-slate-700 mb-4">Kontrol Simulasi</h2>
+                 <div class="control-group">
+                    <label for="permeability-slider" class="block font-semibold text-slate-700 text-sm mb-1">Permeabilitas Tanah (k)</label>
+                    <input id="permeability-slider" type="range" min="5" max="100" value="50" class="w-full">
+                     <div class="flex justify-between text-xs text-slate-500 mt-1">
+                        <span>Rendah</span>
+                        <span>Tinggi</span>
+                    </div>
+                 </div>
+                 <div class="control-group">
+                    <label for="concentration-slider" class="block font-semibold text-slate-700 text-sm mb-1">Konsentrasi Dinamis (C<sub>d</sub>)</label>
+                    <input id="concentration-slider" type="range" min="10" max="100" value="50" class="w-full">
+                     <div class="flex justify-between text-xs text-slate-500 mt-1">
+                        <span>Rendah</span>
+                        <span>Tinggi</span>
+                    </div>
+                 </div>
+                 
+                 <!-- Hasil Fluks Gas -->
+                 <div class="mt-6 text-center p-3 bg-blue-100 rounded border border-blue-200">
+                    <h3 class="font-semibold text-blue-800">Hasil Fluks Gas (J<sub>CO₂</sub>)</h3>
+                    <p id="flux-value" class="text-2xl font-bold text-blue-700 mt-1">0</p>
+                    <p class="text-xs text-blue-600">g m<sup>-2</sup> hari<sup>-1</sup></p>
+                 </div>
+
+                 <div id="observation-box" class="mt-4 text-sm p-3 bg-white rounded border border-slate-200">
+                    <h3 class="font-semibold mb-1">Pengamatan:</h3>
+                    <p id="observation-text" class="text-slate-600"></p>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- PENGATURAN DASAR ---
+        const canvas = document.getElementById('flux-canvas');
+        const ctx = canvas.getContext('2d');
+        const permeabilitySlider = document.getElementById('permeability-slider');
+        const concentrationSlider = document.getElementById('concentration-slider');
+        const observationText = document.getElementById('observation-text');
+        const fluxValueText = document.getElementById('flux-value');
+
+        let particles = [];
+        const MAX_PARTICLES = 1500;
+        let params = {
+            permeability: 0.5,
+            emissionRate: 5 // Partikel per frame
+        };
+
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            const size = Math.min(container.offsetWidth, container.offsetHeight);
+            canvas.width = size;
+            canvas.height = size;
+        }
+
+        // --- PARTIKEL & LOGIKA SIMULASI ---
+        class Particle {
+            constructor() {
+                this.reset();
+                this.radius = Math.random() * 2 + 1;
+            }
+
+            reset() {
+                this.x = canvas.width * (0.25 + Math.random() * 0.5);
+                this.y = canvas.height;
+                this.life = 200 + Math.random() * 100;
+            }
+
+            update() {
+                // Pengaruh permeabilitas pada kecepatan dan penyebaran
+                const verticalSpeed = 0.5 + params.permeability * 2;
+                const horizontalSpread = 2.5 * (1 - params.permeability * 0.9);
+                
+                this.y -= verticalSpeed;
+                this.x += (Math.random() - 0.5) * horizontalSpread;
+
+                this.life--;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(220, 38, 38, ${Math.max(0, this.life / 200)})`;
+                ctx.fill();
+            }
+        }
+
+        // --- GAMBAR LATAR BELAKANG & ELEMEN ---
+        function drawBackground() {
+            ctx.fillStyle = '#BFD7ED';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const groundLevel = canvas.height * 0.3;
+
+            ctx.fillStyle = '#ab8e75';
+            ctx.globalAlpha = 0.9 - (params.permeability * 0.7);
+            ctx.fillRect(0, groundLevel, canvas.width, canvas.height - groundLevel);
+            ctx.globalAlpha = 1.0;
+            
+            ctx.fillStyle = '#69b578';
+            ctx.fillRect(0, groundLevel, canvas.width, 10);
+            
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height + 20, 50, Math.PI, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(255, 69, 0, 0.5)';
+            ctx.fill();
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 14px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('Lapisan Tanah', canvas.width/2, canvas.height * 0.7);
+            
+            ctx.fillStyle = '#ff4500';
+            ctx.fillText('Sumber Gas', canvas.width/2, canvas.height - 5);
+        }
+
+        // --- LOOP UTAMA ---
+        function animate() {
+            drawBackground();
+
+            // **PERBAIKAN:** Laju emisi partikel dikontrol slider konsentrasi
+            const particlesToEmit = params.emissionRate;
+            for(let i=0; i<particlesToEmit; i++) {
+                if (particles.length < MAX_PARTICLES) {
+                    particles.push(new Particle());
+                }
+            }
+            
+            for(let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if(particles[i].life <= 0 || particles[i].y < 0) {
+                    particles.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+        
+        // --- KONTROL & INISIALISASI ---
+        function updateParamsAndFlux() {
+            params.permeability = permeabilitySlider.value / 100;
+            // **PERBAIKAN:** Hubungkan slider konsentrasi ke laju emisi
+            params.emissionRate = Math.floor(concentrationSlider.value / 10);
+            
+            // Gunakan nilai slider sebagai proxy untuk Cd, diskalakan ke rentang yang wajar
+            const Cd_proxy = concentrationSlider.value / 1000.0;
+            
+            // Hitung Fluks Gas menggunakan Persamaan 3.22
+            const k = params.permeability;
+            const Cd = Cd_proxy;
+            const J_CO2 = (32000 - 5700 * Math.pow(k, 0.24)) * Cd + 6500 * Math.pow(k, 0.6) * Math.pow(Cd, 3);
+            
+            // Tampilkan hasil
+            fluxValueText.textContent = J_CO2.toFixed(0);
+
+            // Update Teks Pengamatan
+            let obsText = "";
+            if (params.permeability < 0.3) {
+                obsText += "Permeabilitas rendah membuat gas sulit menembus dan cenderung menyebar.";
+            } else if (params.permeability > 0.7) {
+                obsText += "Permeabilitas tinggi memungkinkan gas naik dengan cepat dan lurus.";
+            } else {
+                 obsText += "Permeabilitas sedang, pergerakan gas seimbang antara vertikal dan menyebar.";
+            }
+            observationText.textContent = obsText;
+        }
+
+        function init() {
+            resizeCanvas();
+            permeabilitySlider.addEventListener('input', updateParamsAndFlux);
+            concentrationSlider.addEventListener('input', updateParamsAndFlux);
+            updateParamsAndFlux();
+            animate();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        init();
+    </script>
+</body>
+</html>
