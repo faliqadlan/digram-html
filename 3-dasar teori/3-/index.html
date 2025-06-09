@@ -77,17 +77,6 @@
             <!-- Panel Tengah: Skala Perbandingan -->
             <div class="lg:col-span-2 flex flex-row lg:flex-col justify-around items-center bg-slate-50 p-2 rounded-lg border">
                 <div class="h-full lg:h-auto lg:w-full text-center py-2 flex flex-col items-center">
-                    <div class="font-bold text-xs mb-1">Kedalaman</div>
-                    <div class="relative flex-grow lg:flex-grow-0 lg:h-40 w-1 bg-gray-300 mx-auto rounded-full">
-                         <div class="absolute top-0 w-full text-center text-xs -mt-4">0m</div>
-                         <div class="absolute bottom-0 w-full text-center text-xs -mb-4">100m</div>
-                    </div>
-                </div>
-                <div class="h-full lg:h-auto lg:w-full text-center py-2 flex flex-col items-center">
-                    <div class="font-bold text-xs mb-1">Konsentrasi</div>
-                    <div class="relative flex-grow lg:flex-grow-0 lg:h-40 w-4 bg-gradient-to-t from-blue-800 to-blue-200 mx-auto rounded-full"></div>
-                </div>
-                <div class="h-full lg:h-auto lg:w-full text-center py-2 flex flex-col items-center">
                     <div class="font-bold text-xs mb-1">Difusi</div>
                     <div id="diffusion-scale" class="relative flex-grow lg:flex-grow-0 lg:h-40 w-4 bg-blue-500 mx-auto rounded-full transition-all duration-300" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);"></div>
                 </div>
@@ -150,8 +139,18 @@
                 this.life = this.initialLife;
             }
             update() {
-                this.y -= advectionStrength + (Math.random() * 0.5);
-                this.x += (Math.random() - 0.5) * diffusionStrength;
+                const boundaryY = pCanvas.height * 0.4;
+                let currentAdvection = advectionStrength;
+                let currentDiffusion = diffusionStrength;
+
+                // **PERBAIKAN LOGIKA:** Jika partikel berada di zona difusi (atas), perjelas perilakunya
+                if (this.y < boundaryY) {
+                    currentAdvection *= 0.4; // Perlambat gerakan vertikal secara signifikan
+                    currentDiffusion *= 2.5; // Tingkatkan penyebaran horizontal secara dramatis
+                }
+
+                this.y -= currentAdvection + (Math.random() * 0.2); // Kurangi kecepatan acak vertikal dasar
+                this.x += (Math.random() - 0.5) * currentDiffusion;
                 this.life--;
             }
             draw() {
