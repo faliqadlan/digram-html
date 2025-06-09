@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dasbor Visual Perpindahan Gas: Proses & Profil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .panel {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        canvas, svg {
+            border-radius: 0.5rem;
+            border: 1px solid #cbd5e1;
+        }
+        .explanation-box {
+            background-color: #f0f9ff;
+            border-left: 4px solid #0284c7;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 0.25rem;
+            color: #0c4a6e;
+            transition: all 0.3s ease-in-out;
+        }
+         /* Custom slider styles */
+        input[type=range] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #d1e2f0;
+            border-radius: 5px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            margin-top: -6px;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex items-center justify-center min-h-screen">
+
+    <div class="panel p-4 sm:p-6 w-full max-w-6xl">
+        <h1 class="text-xl md:text-2xl font-bold text-center text-slate-800 mb-2">Dasbor Visual Perpindahan Gas</h1>
+        <p class="text-center text-slate-600 mb-6 text-sm">Geser slider untuk mengubah Bilangan Péclet (Pe) dan amati pengaruhnya pada proses pergerakan partikel dan profil konsentrasi akhir.</p>
+        
+        <!-- Main Grid Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+            <!-- Panel Kiri: Simulasi Partikel -->
+            <div class="lg:col-span-5 flex flex-col">
+                <h3 class="font-semibold text-center text-slate-700 mb-2">Proses Pergerakan Partikel</h3>
+                <div class="w-full aspect-square relative">
+                    <canvas id="particle-canvas" class="w-full h-full"></canvas>
+                </div>
+            </div>
+
+            <!-- Panel Tengah: Skala Perbandingan -->
+            <div class="lg:col-span-2 flex flex-row lg:flex-col justify-around items-center bg-slate-50 p-2 rounded-lg border">
+                <div class="h-full lg:h-auto lg:w-full text-center py-2 flex flex-col items-center">
+                    <div class="font-bold text-xs mb-1">Kedalaman</div>
+                    <div class="relative flex-grow lg:flex-grow-0 lg:h-40 w-1 bg-gray-300 mx-auto rounded-full">
+                         <div class="absolute top-0 w-full text-center text-xs -mt-4">0m</div>
+                         <div class="absolute bottom-0 w-full text-center text-xs -mb-4">100m</div>
+                    </div>
+                </div>
+                <div class="h-full lg:h-auto lg:w-full text-center py-2 flex flex-col items-center">
+                    <div class="font-bold text-xs mb-1">Konsentrasi</div>
+                    <div class="relative flex-grow lg:flex-grow-0 lg:h-40 w-4 bg-gradient-to-t from-blue-800 to-blue-200 mx-auto rounded-full"></div>
+                </div>
+                <div class="h-full lg:h-auto lg:w-full text-center py-2 flex flex-col items-center">
+                    <div class="font-bold text-xs mb-1">Difusi</div>
+                    <div id="diffusion-scale" class="relative flex-grow lg:flex-grow-0 lg:h-40 w-4 bg-blue-500 mx-auto rounded-full transition-all duration-300" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);"></div>
+                </div>
+                <div class="h-full lg:h-auto lg:w-full text-center py-2 flex flex-col items-center">
+                    <div class="font-bold text-xs mb-1">Adveksi</div>
+                    <div id="advection-scale" class="relative flex-grow lg:flex-grow-0 lg:h-40 w-4 bg-cyan-500 mx-auto rounded-full transition-all duration-300" style="clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);"></div>
+                </div>
+            </div>
+
+            <!-- Panel Kanan: Profil Konsentrasi -->
+            <div class="lg:col-span-5 flex flex-col">
+                <h3 class="font-semibold text-center text-slate-700 mb-2">Hasil Profil Konsentrasi (Eq. 3.12)</h3>
+                 <div class="w-full aspect-square relative">
+                    <svg id="profile-svg" viewBox="0 0 500 500" class="w-full h-full bg-gray-50"></svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Kontrol Slider & Penjelasan -->
+        <div class="mt-6">
+            <div class="mb-4">
+                <label for="peclet-slider" class="block font-semibold text-slate-700 mb-2">Bilangan Péclet (Pe): <span id="pe-value" class="font-bold text-blue-600"></span></label>
+                <input id="peclet-slider" type="range" min="0" max="100" value="10" class="w-full">
+                <div class="flex justify-between text-xs text-slate-500 mt-1">
+                    <span>Difusi Dominan (Pe << 1)</span>
+                    <span>Adveksi Dominan (Pe >> 1)</span>
+                </div>
+            </div>
+            <div id="explanation-box" class="explanation-box">
+                <h4 class="font-bold mb-1">Interpretasi Persamaan 3.12:</h4>
+                <p id="explanation-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Inisialisasi Umum ---
+        const slider = document.getElementById('peclet-slider');
+        const explanationText = document.getElementById('explanation-text');
+        const peValueSpan = document.getElementById('pe-value');
+        
+        // --- Bagian 1: Simulasi Partikel Dinamis (Kiri) ---
+        const pCanvas = document.getElementById('particle-canvas');
+        const pCtx = pCanvas.getContext('2d');
+        let particles = [];
+        let advectionStrength = 0;
+        let diffusionStrength = 5.0;
+
+        function resizeParticleCanvas() {
+            pCanvas.width = pCanvas.offsetWidth;
+            pCanvas.height = pCanvas.offsetHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * pCanvas.width;
+                this.y = pCanvas.height + 10;
+                this.radius = Math.random() * 2 + 1.5;
+                this.initialLife = 200 + Math.random() * 150;
+                this.life = this.initialLife;
+            }
+            update() {
+                this.y -= advectionStrength + (Math.random() * 0.5);
+                this.x += (Math.random() - 0.5) * diffusionStrength;
+                this.life--;
+            }
+            draw() {
+                pCtx.beginPath();
+                pCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                const opacity = Math.max(0, this.life / this.initialLife) * 0.8;
+                pCtx.fillStyle = `rgba(199, 21, 21, ${opacity})`;
+                pCtx.fill();
+            }
+        }
+        
+        function drawParticleSimulationFrame() {
+            // Gambar latar belakang
+            pCtx.fillStyle = '#f1f5f9'; // bg-slate-100 equivalent
+            pCtx.fillRect(0, 0, pCanvas.width, pCanvas.height);
+
+            // Gambar garis batas dan label
+            const boundaryY = pCanvas.height * 0.4;
+            pCtx.setLineDash([8, 4]);
+            pCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+            pCtx.lineWidth = 1;
+            pCtx.beginPath();
+            pCtx.moveTo(0, boundaryY);
+            pCtx.lineTo(pCanvas.width, boundaryY);
+            pCtx.stroke();
+            pCtx.setLineDash([]);
+
+            pCtx.font = 'bold 12px Inter';
+            pCtx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+            pCtx.textAlign = 'left';
+            pCtx.fillText('Zona Dominan Difusi', 10, boundaryY - 10);
+            pCtx.textAlign = 'right';
+            pCtx.fillText('Zona Dominan Adveksi', pCanvas.width - 10, boundaryY + 20);
+        }
+
+        function handleParticles() {
+            if (particles.length < 350) { particles.push(new Particle()); }
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].life <= 0 || particles[i].y < 0) {
+                    particles.splice(i, 1);
+                }
+            }
+        }
+        
+        function animateParticles() {
+            if (pCanvas.width > 0 && pCanvas.height > 0){
+                drawParticleSimulationFrame();
+                handleParticles();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        // --- Bagian 2: Grafik Profil Konsentrasi (Kanan) ---
+        const svg = document.getElementById('profile-svg');
+        const margin = {top: 40, right: 20, bottom: 40, left: 50};
+        const width = 500 - margin.left - margin.right;
+        const height = 500 - margin.top - margin.bottom;
+
+        function setupSVG() {
+            svg.innerHTML = `
+                <g transform="translate(${margin.left}, ${margin.top})">
+                    <!-- Axes -->
+                    <line x1="0" y1="0" x2="0" y2="${height}" stroke="#94a3b8" stroke-width="2"></line>
+                    <line x1="0" y1="${height}" x2="${width}" y2="${height}" stroke="#94a3b8" stroke-width="2"></line>
+                    <!-- Labels -->
+                    <text x="${-margin.left + 15}" y="${height / 2}" font-size="14" fill="#475569" transform="rotate(-90, ${-margin.left + 15}, ${height/2})">Kedalaman (z)</text>
+                    <text x="${width / 2}" y="${height + margin.bottom -10}" font-size="14" fill="#475569" text-anchor="middle">Konsentrasi (C)</text>
+                    <text x="0" y="-10" font-size="12" fill="#475569" text-anchor="middle">z=0</text>
+                    <text x="0" y="${height + 15}" font-size="12" fill="#475569" text-anchor="middle">C_atm</text>
+                    <!-- Curve -->
+                    <path id="concentration-curve" d="" stroke="#1d4ed8" stroke-width="4" fill="none"></path>
+                </g>
+            `;
+        }
+
+        function updateProfileCurve(peValue) {
+            const curve = document.getElementById('concentration-curve');
+            // Persamaan 3.12: C(z) = C0 + (CL - C0) / (exp(Pe) - 1) * (exp(Pe*z/L) - 1)
+            // Di mana Pe = v*L/D
+            // Kode ini menggunakan asumsi normalisasi: C0=0 (di permukaan), CL=1 (di kedalaman L), L=1.
+            // Dengan normalisasi: z_norm = z/L. Jadi, Pe*z/L menjadi Pe*z_norm. Ini ekuivalen dengan (v*L/D)*(z/L) = v*z/D.
+            // Oleh karena itu, implementasi kode ini secara matematis sesuai dengan persamaan yang diberikan.
+            const C0 = 0, CL = 1, L = 1;
+            let pathData = `M 0 ${height}`; // Mulai dari C_atm (C=0) pada z=L (bawah)
+
+            const pe = Math.max(0.01, peValue * 0.3); // Map slider 0-100 to Pe 0.01-30
+
+            for (let z_norm = 1; z_norm >= 0; z_norm -= 0.02) {
+                let c_norm;
+                if (pe < 0.05) { // Handle limit Pe -> 0, di mana C(z) -> C0 + (CL - C0) * (z/L) (profil linear)
+                     c_norm = C0 + (CL - C0) * z_norm;
+                } else {
+                     c_norm = C0 + (CL - C0) / (Math.exp(pe) - 1) * (Math.exp(pe * z_norm) - 1);
+                }
+               
+                const x = c_norm * width;
+                const y = (1 - z_norm) * height; // Invert Y-axis untuk plotting (0,0 di kiri atas)
+                pathData += ` L ${x} ${y}`;
+            }
+            curve.setAttribute('d', pathData);
+        }
+
+        // --- Bagian 3: Kontrol Utama & Integrasi ---
+        function updateAll() {
+            const peSliderValue = parseInt(slider.value); // 0 to 100
+            
+            // Update Simulasi Partikel
+            advectionStrength = 0.3 + (peSliderValue / 100) * 8.0; 
+            diffusionStrength = 8.0 * (1 - peSliderValue / 110); 
+
+            // Update Grafik Profil
+            const peValueForCurve = Math.max(0.01, peSliderValue * 0.3);
+            updateProfileCurve(peSliderValue);
+            
+            // Update Skala Perbandingan
+            document.getElementById('diffusion-scale').style.clipPath = `polygon(0 0, 100% 0, 100% ${100 - peSliderValue}%, 0 ${100 - peSliderValue}%)`;
+            document.getElementById('advection-scale').style.clipPath = `polygon(0 ${100 - peSliderValue}%, 100% ${100 - peSliderValue}%, 100% 100%, 0 100%)`;
+
+            // Update Teks Penjelasan berdasarkan Bilangan Péclet
+            const peDisplayValue = peValueForCurve * 5; // Scaling for a more intuitive display range
+            peValueSpan.textContent = peDisplayValue.toFixed(2);
+            
+            if (peDisplayValue < 1.0) {
+                explanationText.innerHTML = "<strong>Dominan Difusi (Pe << 1):</strong> Nilai <strong>v</strong> (kecepatan adveksi) kecil dibandingkan <strong>D</strong> (koefisien difusi). Partikel bergerak lambat dan menyebar luas (kiri). Hasilnya adalah profil konsentrasi berbentuk cekung (kanan) karena perpindahan dikontrol oleh gradien konsentrasi.";
+            } else if (peDisplayValue > 10.0) {
+                 explanationText.innerHTML = "<strong>Dominan Adveksi (Pe >> 1):</strong> Nilai <strong>v</strong> jauh lebih besar dari <strong>D</strong>. Partikel bergerak cepat dan lurus dalam aliran kuat (kiri). Hasilnya adalah profil berbentuk cembung (kanan), menunjukkan konsentrasi meningkat tajam di kedalaman akibat aliran fluida dari bawah.";
+            } else {
+                 explanationText.innerHTML = "<strong>Adveksi-Difusi Seimbang (Pe ≈ 1):</strong> Kedua mekanisme berkontribusi seimbang. Pergerakan partikel terarah namun tetap menyebar (kiri), menghasilkan profil konsentrasi yang mendekati linear (kanan).";
+            }
+        }
+
+        function init() {
+            resizeParticleCanvas();
+            setupSVG();
+            updateAll();
+            animateParticles();
+        }
+
+        slider.addEventListener('input', updateAll);
+        window.addEventListener('resize', resizeParticleCanvas);
+        
+        init();
+    </script>
+</body>
+</html>

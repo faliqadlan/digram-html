@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisasi Proses Perpindahan Gas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .panel {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .panel-title {
+            border-bottom: 1px solid #e2e8f0;
+        }
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        .info-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+        .equation {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e2e8f0;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            color: #1e293b;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-2xl md:text-3xl font-bold text-center text-slate-800 mb-2">Proses Perpindahan Gas: Difusi vs. Adveksi</h1>
+        <p class="text-center text-slate-600 mb-8">Visualisasi skematik yang menunjukkan perbedaan pergerakan partikel gas dalam media berpori.</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Panel Kiri: Difusi -->
+            <div class="panel">
+                <div class="panel-title p-4">
+                    <h2 class="text-xl font-semibold text-slate-700 text-center">Difusi</h2>
+                    <p class="text-sm text-slate-500 text-center">(Digerakkan oleh Gradien Konsentrasi)</p>
+                </div>
+                <div class="p-4">
+                    <div class="h-80 md:h-96 relative border rounded-lg overflow-hidden">
+                        <svg id="diffusion-canvas"></svg>
+                        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center opacity-70 bg-white/70 px-2 py-1 rounded-md">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-blue-600"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                             <span class="ml-2 font-semibold text-blue-600">Arah Perpindahan Netto</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-4 rounded-lg info-box">
+                        <h3 class="font-semibold text-slate-700 mb-2">Perilaku Gas:</h3>
+                        <ul class="list-disc list-inside text-sm text-slate-600 space-y-1">
+                            <li>Gerakan partikel bersifat <strong>individual dan acak</strong> (zig-zag).</li>
+                            <li>Menyebar dari area <strong>konsentrasi tinggi</strong> (bawah) ke <strong>rendah</strong> (atas).</li>
+                            <li>Hasil akhir adalah penyebaran partikel yang merata.</li>
+                        </ul>
+                        <h3 class="font-semibold text-slate-700 mt-4 mb-2">Persamaan Terkait (Hukum Fick I):</h3>
+                        <div class="equation">J_d = -D ∇C</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel Kanan: Adveksi -->
+            <div class="panel">
+                <div class="panel-title p-4">
+                    <h2 class="text-xl font-semibold text-slate-700 text-center">Adveksi</h2>
+                    <p class="text-sm text-slate-500 text-center">(Digerakkan oleh Gradien Tekanan)</p>
+                </div>
+                <div class="p-4">
+                    <div class="h-80 md:h-96 relative border rounded-lg overflow-hidden">
+                        <svg id="advection-canvas"></svg>
+                         <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center opacity-70 bg-white/70 px-2 py-1 rounded-md">
+                             <span class="font-semibold text-cyan-600">Aliran Fluida Massal (Bulk Flow)</span>
+                        </div>
+                    </div>
+                     <div class="mt-4 p-4 rounded-lg info-box">
+                        <h3 class="font-semibold text-slate-700 mb-2">Perilaku Gas:</h3>
+                        <ul class="list-disc list-inside text-sm text-slate-600 space-y-1">
+                            <li>Gerakan partikel bersifat <strong>kolektif dan searah</strong>.</li>
+                            <li>Partikel "terbawa" atau "terdorong" oleh aliran fluida (angin).</li>
+                            <li>Dipicu oleh perbedaan <strong>tekanan</strong> dari satu area ke area lain.</li>
+                        </ul>
+                        <h3 class="font-semibold text-slate-700 mt-4 mb-2">Persamaan Terkait (Hukum Darcy):</h3>
+                        <div class="equation">v = -(k/µ) ∇P</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-8 p-4 bg-white rounded-lg border border-slate-200 shadow-sm">
+             <h3 class="text-lg font-semibold text-slate-700 mb-2">Legenda</h3>
+             <div class="flex flex-wrap gap-x-6 gap-y-2">
+                 <div class="flex items-center">
+                     <div class="w-5 h-5 rounded-full bg-slate-500 mr-2"></div>
+                     <span>Partikel Padat (Tanah)</span>
+                 </div>
+                 <div class="flex items-center">
+                     <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                     <span>Partikel Gas</span>
+                 </div>
+                  <div class="flex items-center">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-cyan-500 mr-2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                     <span>Arah Aliran Fluida</span>
+                 </div>
+             </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- PENGATURAN UMUM ---
+        const SVG_NS = "http://www.w3.org/2000/svg";
+        const NUM_SOIL_PARTICLES = 40;
+        const NUM_GAS_PARTICLES_DIFFUSION = 100;
+        const NUM_GAS_PARTICLES_ADVECTION = 80;
+
+        const diffusionSVG = document.getElementById('diffusion-canvas');
+        const advectionSVG = document.getElementById('advection-canvas');
+        let w, h;
+
+        function setCanvasSize(){
+            const rect = diffusionSVG.getBoundingClientRect();
+            w = rect.width;
+            h = rect.height;
+        }
+
+        // --- FUNGSI BANTU ---
+        const random = (min, max) => Math.random() * (max - min) + min;
+
+        // Membuat dan menyimpan partikel tanah yang sama untuk kedua panel
+        const soilParticles = [];
+        function createSoilParticles(){
+            soilParticles.length = 0;
+            for (let i = 0; i < NUM_SOIL_PARTICLES; i++) {
+                soilParticles.push({
+                    cx: random(0, w),
+                    cy: random(0, h),
+                    r: random(w * 0.05, w * 0.15),
+                    fill: `hsl(30, 20%, ${random(50, 70)}%)` // Warna coklat bervariasi
+                });
+            }
+        }
+        
+        // Fungsi untuk menggambar partikel tanah
+        function drawSoil(svg) {
+            svg.innerHTML = ''; // Clear previous elements
+            const defs = document.createElementNS(SVG_NS, 'defs');
+            const filter = document.createElementNS(SVG_NS, 'filter');
+            filter.setAttribute('id', `rough-${svg.id}`);
+            const turbulence = document.createElementNS(SVG_NS, 'feTurbulence');
+            turbulence.setAttribute('type', 'fractalNoise');
+            turbulence.setAttribute('baseFrequency', '0.1');
+            turbulence.setAttribute('numOctaves', '2');
+            turbulence.setAttribute('result', 'turbulence');
+            const displacement = document.createElementNS(SVG_NS, 'feDisplacementMap');
+            displacement.setAttribute('in2', 'turbulence');
+            displacement.setAttribute('in', 'SourceGraphic');
+            displacement.setAttribute('scale', '5');
+            filter.appendChild(turbulence);
+            filter.appendChild(displacement);
+            defs.appendChild(filter);
+            svg.appendChild(defs);
+
+            soilParticles.forEach(p => {
+                const circle = document.createElementNS(SVG_NS, 'circle');
+                circle.setAttribute('cx', p.cx);
+                circle.setAttribute('cy', p.cy);
+                circle.setAttribute('r', p.r);
+                circle.setAttribute('fill', p.fill);
+                circle.setAttribute('filter', `url(#rough-${svg.id})`);
+                circle.setAttribute('class', 'soil-particle');
+                svg.appendChild(circle);
+            });
+        }
+
+        // --- LOGIKA VISUALISASI ---
+
+        // 1. Panel Difusi
+        let gasParticlesDiffusion = [];
+        function setupDiffusion() {
+            drawSoil(diffusionSVG);
+            gasParticlesDiffusion = [];
+            for (let i = 0; i < NUM_GAS_PARTICLES_DIFFUSION; i++) {
+                const yPos = h - Math.pow(random(0, Math.sqrt(h)), 2);
+                const particle = {
+                    el: document.createElementNS(SVG_NS, 'circle'), x: random(0, w), y: yPos, vx: 0, vy: 0, r: 4
+                };
+                particle.el.setAttribute('cx', particle.x); particle.el.setAttribute('cy', particle.y);
+                particle.el.setAttribute('r', particle.r); particle.el.setAttribute('fill', 'rgba(239, 68, 68, 0.9)');
+                gasParticlesDiffusion.push(particle);
+                diffusionSVG.appendChild(particle.el);
+            }
+        }
+
+        function animateDiffusion() {
+            if (w > 0) {
+                gasParticlesDiffusion.forEach(p => {
+                    p.vx += random(-0.2, 0.2); p.vy += random(-0.2, 0.2);
+                    p.vy -= 0.03;
+                    p.vx = Math.max(-1, Math.min(1, p.vx)); p.vy = Math.max(-1, Math.min(1, p.vy));
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.y < 0) { p.y = h; p.x = random(0,w); }
+                    if (p.x < 0 || p.x > w) { p.x = w/2 + random(-w/4, w/4); }
+                    p.el.setAttribute('cx', p.x); p.el.setAttribute('cy', p.y);
+                });
+            }
+            requestAnimationFrame(animateDiffusion);
+        }
+
+        // 2. Panel Adveksi
+        let gasParticlesAdvection = [];
+        function setupAdvection() {
+            drawSoil(advectionSVG);
+            gasParticlesAdvection = [];
+            // Menggambar panah aliran fluida di latar belakang
+            for (let i = 0; i < 5; i++) {
+                const xPos = (w / 5) * (i + 0.5);
+                const path = document.createElementNS(SVG_NS, 'path');
+                path.setAttribute('d', `M ${xPos} ${h} Q ${xPos + random(-20, 20)} ${h/2} ${xPos} 0`);
+                path.setAttribute('stroke', 'rgba(14, 165, 233, 0.3)'); path.setAttribute('stroke-width', '15');
+                path.setAttribute('fill', 'none'); path.setAttribute('stroke-linecap', 'round');
+                advectionSVG.appendChild(path);
+            }
+            for (let i = 0; i < NUM_GAS_PARTICLES_ADVECTION; i++) {
+                const particle = {
+                    el: document.createElementNS(SVG_NS, 'circle'), x: random(0, w), y: random(0, h), r: 4
+                };
+                particle.el.setAttribute('cx', particle.x); particle.el.setAttribute('cy', particle.y);
+                particle.el.setAttribute('r', particle.r); particle.el.setAttribute('fill', 'rgba(239, 68, 68, 0.9)');
+                gasParticlesAdvection.push(particle);
+                advectionSVG.appendChild(particle.el);
+            }
+        }
+
+        function animateAdvection() {
+             if (w > 0) {
+                gasParticlesAdvection.forEach(p => {
+                    p.y -= 1.5;
+                    if (p.y < 0) { p.y = h; }
+                    p.el.setAttribute('cx', p.x); p.el.setAttribute('cy', p.y);
+                });
+            }
+            requestAnimationFrame(animateAdvection);
+        }
+
+        // --- INISIALISASI ---
+        function initializeAll(){
+            setCanvasSize();
+            if (w > 0) {
+                createSoilParticles();
+                setupDiffusion();
+                setupAdvection();
+            }
+        }
+
+        window.addEventListener('load', initializeAll);
+        window.addEventListener('resize', initializeAll);
+
+        animateDiffusion();
+        animateAdvection();
+
+    </script>
+</body>
+</html>
