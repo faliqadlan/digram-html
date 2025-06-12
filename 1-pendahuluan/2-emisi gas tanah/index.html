@@ -3,96 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagram Pemanfaatan Emisi Gas Tanah</title>
+    <title>Diagram Visual: Pemanfaatan Emisi Gas Tanah</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f1f5f9; /* slate-100 */
+            background-color: #e2e8f0; /* slate-200 */
         }
-        .hub {
-            @apply bg-slate-800 text-white p-6 rounded-full w-48 h-48 flex items-center justify-center text-center shadow-2xl;
+        .card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem; /* rounded-3xl */
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease;
         }
-        .spoke-line {
-            @apply absolute bg-slate-400;
+        .card:hover {
+            transform: translateY(-10px);
         }
-        .application-card {
-            @apply bg-white p-5 rounded-xl shadow-lg border border-slate-200;
-            min-height: 200px; /* Menjamin tinggi minimum yang sama */
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            z-index: 1;
         }
-        .application-title {
-            @apply text-xl font-bold mb-3 flex items-center;
+        .card-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.1));
+            z-index: 2;
         }
-        .application-icon {
-            @apply w-8 h-8 mr-3;
+        .card-content {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Align content to bottom */
+            height: 100%;
+            padding: 2rem;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
         }
-        .application-list li {
-            @apply text-sm text-slate-700 mb-2 pl-5 relative;
+        .card-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
         }
-        .application-list li::before {
-            content: '✓';
-            @apply absolute left-0 font-bold;
-        }
-        .citation {
-            @apply text-xs text-slate-500 mt-3 block;
+        .card-title {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 900;
+            line-height: 1.1;
         }
     </style>
 </head>
 <body class="p-4 sm:p-8 flex items-center justify-center min-h-screen">
 
-    <div class="w-full max-w-6xl mx-auto">
-        <h1 class="text-3xl font-bold text-slate-900 text-center mb-12">Pemanfaatan Luas Emisi Gas Tanah dalam Penelitian Kebumian</h1>
+    <div class="w-full max-w-7xl mx-auto">
+        <h1 class="text-3xl sm:text-4xl font-black text-slate-800 text-center mb-8">Pemanfaatan Emisi Gas Tanah</h1>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8 items-start">
-            <!-- Aplikasi 1: Geotermal -->
-            <div class="application-card">
-                <h2 class="application-title text-orange-600">
-                    <svg class="application-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0-2.38 2.383A8.287 8.287 0 0 0 9 9.601v4.425a8.248 8.248 0 0 1-2.962-.848 8.25 8.25 0 0 0 10.324-4.862Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 3.75 3.75 0 0 0-7.99 0 3.75 3.75 0 0 0 .495 7.468Z" /></svg>
-                    Studi Geotermal
-                </h2>
-                <ul class="application-list">
-                    <li class="text-green-800">Mengamati jalur sirkulasi fluida panas bumi untuk memahami sistem reservoir.
-                        <span class="citation">(Taussi dkk., 2023)</span>
-                    </li>
-                    <li class="text-green-800">Menganalisis sifat difusi CO₂ melalui sistem patahan.
-                        <span class="citation">(Taussi dkk., 2022)</span>
-                    </li>
-                    <li class="text-green-800">Memetakan struktur geologi bawah permukaan dengan melacak gas H₂S di sepanjang patahan.</li>
-                </ul>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- Card 1: Gunung Api -->
+            <div class="card aspect-[3/4]">
+                <!-- 
+                  URL Gambar Gunung Api: https://images.unsplash.com/photo-1593991342668-3e253733a142
+                  Sumber: Unsplash, oleh Tomáš Malík (Gunung Ijen)
+                -->
+                <img src="https://magmamatters.com/wp-content/uploads/2024/03/monitoring-techniques-for-volcanic-gas-emissions.jpg" alt="Gunung berapi mengeluarkan uap dan gas sulfur" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x800/334155/ffffff?text=Gunung+Api';">
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <div class="card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                    </div>
+                    <h2 class="card-title">Pemantauan<br>Gunung Api</h2>
+                </div>
             </div>
 
-            <!-- Aplikasi 2: Gunung Api -->
-            <div class="application-card">
-                <h2 class="application-title text-red-600">
-                    <svg class="application-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
-                    Pemantauan Gunung Api
-                </h2>
-                <ul class="application-list">
-                    <li class="text-red-800">Mengamati perubahan aktivitas gunung api melalui pengukuran emisi gas secara periodik.
-                        <span class="citation">(Di Martino & Gurrieri, 2023)</span>
-                    </li>
-                    <li class="text-red-800">Mendeteksi kenaikan magma ke permukaan, di mana CO₂ menjadi indikator kunci.</li>
-                     <li class="text-red-800">Menilai potensi bahaya dan prekursor erupsi vulkanik.
-                        <span class="citation">(Nelson dkk., 2024)</span>
-                    </li>
-                </ul>
+            <!-- Card 2: Geotermal -->
+            <div class="card aspect-[3/4]">
+                <!-- 
+                  URL Gambar Geotermal: https://images.unsplash.com/photo-1620052743936-25902f5a0928
+                  Sumber: Unsplash, oleh Ryan Lum (Pembangkit Listrik Hellisheiði, Islandia)
+                -->
+                <img src="https://th.bing.com/th/id/OIP.rq4tbJPnOIeDfOzkl8Zg_gHaEK?rs=1&pid=ImgDetMain" alt="Pembangkit listrik tenaga panas bumi dengan uap" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x800/78716c/ffffff?text=Geotermal';">
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <div class="card-icon">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12Zm0-2.25a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Zm-1.875-3.25a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h1.5a.375.375 0 0 0 .375-.375v-1.5a.375.375 0 0 0-.375-.375h-1.5Zm-3.375-3a.375.375 0 0 0-.375.375v7.5c0 .207.168.375.375.375h7.5a.375.375 0 0 0 .375-.375v-7.5a.375.375 0 0 0-.375-.375h-7.5Z" />
+                        </svg>
+                    </div>
+                    <h2 class="card-title">Eksplorasi<br>Geotermal</h2>
+                </div>
             </div>
 
-            <!-- Aplikasi 3: Gempa Bumi -->
-            <div class="application-card">
-                <h2 class="application-title text-blue-600">
-                    <svg class="application-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" /></svg>
-                    Studi Gempa Bumi
-                </h2>
-                <ul class="application-list">
-                    <li class="text-blue-800">Menganalisis anomali dan kebocoran gas yang terjadi setelah peristiwa gempa bumi.
-                        <span class="citation">(Liu dkk., 2024)</span>
-                    </li>
-                    <li class="text-blue-800">Mengidentifikasi patahan aktif yang berpotensi menghasilkan gempa.</li>
-                    <li class="text-blue-800">Mempelajari perubahan tekanan dan permeabilitas kerak bumi akibat aktivitas seismik.</li>
-                </ul>
+            <!-- Card 3: Gempa Bumi -->
+            <div class="card aspect-[3/4]">
+                <!-- 
+                  URL Gambar Patahan: https://images.unsplash.com/photo-1613529363121-190539de9e22
+                  Sumber: Unsplash, oleh Unseen Histories (Patahan San Andreas)
+                -->
+                <img src="https://th.bing.com/th/id/OIP.UhCZ2dUn-J3FiHduFcvfGAHaE7?rs=1&pid=ImgDetMain" alt="Tampilan udara dari patahan geologi San Andreas" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x800/a8a29e/ffffff?text=Patahan';">
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <div class="card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                        </svg>
+                    </div>
+                    <h2 class="card-title">Studi<br>Gempa Bumi</h2>
+                </div>
             </div>
+
         </div>
     </div>
 </body>
