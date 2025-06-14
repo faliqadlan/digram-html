@@ -11,11 +11,10 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
         }
-        /* Tailwind utility classes moved to HTML elements */
         .arrow {
             position: relative;
             width: 100%;
-            height: 40px; /* Space for arrow */
+            height: 40px;
         }
         .arrow::after {
             content: '';
@@ -37,22 +36,10 @@
             border-right: 6px solid transparent;
             border-top: 8px solid #64748b;
         }
-        .connector-line {
-            position: absolute;
-            left: 50%;
-            width: 2px;
-            background-color: #64748b;
-        }
-        .horizontal-line {
-            position: absolute;
-            top: 0;
-            height: 2px;
-            background-color: #64748b;
-        }
     </style>
 </head>
 <body class="p-4 sm:p-6 md:p-8">
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-2xl mx-auto">
         <h1 class="text-2xl font-bold text-slate-800 text-center mb-8">Diagram Alir Hubungan Fenomena Geologi, Emisi Gas, dan Metode Pengukuran</h1>
 
         <!-- Level 1: Fenomena Geologi -->
@@ -65,28 +52,15 @@
         
         <div class="arrow down-arrow"></div>
 
-        <!-- Level 2: Jenis Fenomena -->
-        <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
-            <!-- Garis penghubung horizontal -->
-            <div class="hidden md:block absolute top-[-30px] h-px bg-slate-400 w-full left-0"></div>
-            <!-- Garis vertikal dari tengah garis horizontal ke atas -->
-            <div class="hidden md:block absolute top-[-30px] left-1/2 w-px bg-slate-400 h-[10px] transform -translate-x-1/2"></div>
-            
-            <div class="relative">
-                 <!-- Garis vertikal ke atas -->
-                <div class="absolute bottom-full left-1/2 w-px bg-slate-400 h-[10px] transform -translate-x-1/2"></div>
-                <div class="flow-box bg-white border-2 border-slate-200 rounded-lg shadow-md p-4 text-center transition-transform transform hover:scale-105">
-                    <h3 class="font-semibold text-slate-700">Aktivitas Gunung Api</h3>
-                    <p class="text-xs text-slate-500 mt-1">Pergerakan magma dan fluida vulkanik.</p>
-                </div>
+        <!-- Level 2: Jenis Fenomena - Changed to vertical layout -->
+        <div class="space-y-4 mb-4">
+            <div class="flow-box bg-white border-2 border-slate-200 rounded-lg shadow-md p-4 text-center transition-transform transform hover:scale-105">
+                <h3 class="font-semibold text-slate-700">Aktivitas Gunung Api</h3>
+                <p class="text-xs text-slate-500 mt-1">Pergerakan magma dan fluida vulkanik.</p>
             </div>
-            <div class="relative">
-                <!-- Garis vertikal ke atas -->
-                <div class="absolute bottom-full left-1/2 w-px bg-slate-400 h-[10px] transform -translate-x-1/2"></div>
-                <div class="flow-box">
-                    <h3 class="font-semibold text-slate-700">Aktivitas Tektonik</h3>
-                    <p class="text-xs text-slate-500 mt-1">Pergeseran lempeng dan gempa bumi yang membuka rekahan.</p>
-                </div>
+            <div class="flow-box bg-white border-2 border-slate-200 rounded-lg shadow-md p-4 text-center transition-transform transform hover:scale-105">
+                <h3 class="font-semibold text-slate-700">Aktivitas Tektonik</h3>
+                <p class="text-xs text-slate-500 mt-1">Pergeseran lempeng dan gempa bumi yang membuka rekahan.</p>
             </div>
         </div>
         
@@ -102,30 +76,19 @@
 
         <div class="arrow down-arrow"></div>
 
-        <!-- Level 4: Jenis Gas -->
-        <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
-            <!-- Garis penghubung horizontal -->
-            <div class="hidden md:block absolute top-[-30px] h-px bg-slate-400 w-full left-0"></div>
-            <!-- Garis vertikal dari tengah garis horizontal ke atas -->
-            <div class="hidden md:block absolute top-[-30px] left-1/2 w-px bg-slate-400 h-[10px] transform -translate-x-1/2"></div>
-
-            <div class="relative">
-                <div class="absolute bottom-full left-1/2 w-px bg-slate-400 h-[10px] transform -translate-x-1/2"></div>
-                <div class="flow-box h-full bg-white border-2 border-slate-200 rounded-lg shadow-md p-4 text-center transition-transform transform hover:scale-105">
-                    <h3 class="font-semibold text-slate-700">Gas Karbon Dioksida (CO₂)</h3>
-                    <p class="text-xs text-slate-500 mt-2">
-                        <strong>Signifikansi:</strong> Melimpah dalam magma, merupakan indikator kuat aktivitas geokimia saat magma naik ke permukaan.
-                    </p>
-                </div>
+        <!-- Level 4: Jenis Gas - Changed to vertical layout -->
+        <div class="space-y-4 mb-4">
+            <div class="flow-box bg-white border-2 border-slate-200 rounded-lg shadow-md p-4 text-center transition-transform transform hover:scale-105">
+                <h3 class="font-semibold text-slate-700">Gas Karbon Dioksida (CO₂)</h3>
+                <p class="text-xs text-slate-500 mt-2">
+                    <strong>Signifikansi:</strong> Melimpah dalam magma, merupakan indikator kuat aktivitas geokimia saat magma naik ke permukaan.
+                </p>
             </div>
-            <div class="relative">
-                <div class="absolute bottom-full left-1/2 w-px bg-slate-400 h-[10px] transform -translate-x-1/2"></div>
-                <div class="flow-box h-full">
-                    <h3 class="font-semibold text-slate-700">Gas Hidrogen Sulfida (H₂S)</h3>
-                    <p class="text-xs text-slate-500 mt-2">
-                        <strong>Signifikansi:</strong> Bermigrasi melalui patahan, digunakan untuk melacak jalur fluida geotermal dan memetakan struktur bawah permukaan.
-                    </p>
-                </div>
+            <div class="flow-box bg-white border-2 border-slate-200 rounded-lg shadow-md p-4 text-center transition-transform transform hover:scale-105">
+                <h3 class="font-semibold text-slate-700">Gas Hidrogen Sulfida (H₂S)</h3>
+                <p class="text-xs text-slate-500 mt-2">
+                    <strong>Signifikansi:</strong> Bermigrasi melalui patahan, digunakan untuk melacak jalur fluida geotermal dan memetakan struktur bawah permukaan.
+                </p>
             </div>
         </div>
         
