@@ -15,14 +15,14 @@
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
     <div class="w-full max-w-4xl">
         <div class="text-center mb-10">
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Alur Konversi Sinyal Sensor ke Konsentrasi (PPM)</h1>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Diagram 4: Alur Konversi Sinyal Sensor ke Konsentrasi (PPM)</h1>
             <p class="mt-2 text-md text-gray-600">Menjelaskan proses internal perangkat dalam mengolah data mentah sensor.</p>
         </div>
 
         <div class="flex flex-col items-center space-y-0">
 
             <!-- Input -->
-            <div class="flow-step border-t-4 border-blue-500">
+            <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md mx-auto relative border-t-4 border-blue-500">
                 <div class="flex items-center">
                     <div class="bg-blue-100 rounded-full p-3 mr-4">
                         <svg class="w-6 h-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -36,10 +36,10 @@
                 </div>
             </div>
 
-            <div class="flow-arrow">▼</div>
+            <div class="text-gray-400 text-3xl font-light my-4">▼</div>
 
             <!-- Proses 1 -->
-            <div class="flow-step">
+            <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md mx-auto relative">
                  <div class="flex items-center">
                     <div class="bg-gray-100 rounded-full p-3 mr-4">
                         <svg class="w-6 h-6 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -48,7 +48,7 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-lg text-gray-800">PROSES 1: Kalkulasi Resistansi (Rs)</h3>
-                        <p class="text-sm text-gray-600">Menghitung resistansi sensor dari Vout sesuai Persamaan 4.1.</p>
+                        <p class="text-sm text-gray-600">Menghitung resistansi sensor dari Vout.</p>
                         <code class="text-xs bg-gray-200 text-gray-800 rounded px-2 py-1 mt-2 inline-block">Rs = (Vc * Rl) / Vout - Rl</code>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="font-bold text-lg text-gray-800">PROSES 2: Normalisasi Resistansi</h3>
+                        <h3 class="font-bold text-lg text-gray-800">PROSES 2: Menghitung Rs/Ro</h3>
                         <p class="text-sm text-gray-600">Mendapatkan rasio <strong>Rs/Ro</strong> dengan membagi Rs dengan Ro (resistansi di udara bersih).</p>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
             <div class="flow-arrow">▼</div>
             
             <!-- Output -->
-            <div class="flow-step border-t-4 border-green-500">
+            <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md mx-auto relative border-t-4 border-green-500">
                 <div class="flex items-center">
                     <div class="bg-green-100 rounded-full p-3 mr-4">
                         <svg class="w-6 h-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
