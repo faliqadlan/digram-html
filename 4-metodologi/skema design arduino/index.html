@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desain Skematik Rangkaian Elektronik (Versi Screenshot)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-bg: #ffffff;
+            --text-primary: #000000;
+            --board-bg: #00B2B8;
+            --board-border: #007A7E;
+            --component-bg: #f8f9fa;
+            --component-border: #495057;
+            --pin-bg: #e9ecef;
+            --pin-border: #6c757d;
+            --header-bg: #e9ecef;
+            --wire-default: #000000;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Optimized for screenshot/print */
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 16px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* Remove animations and transitions for static screenshot */
+        *, *::before, *::after {
+            animation-duration: 0s !important;
+            animation-delay: 0s !important;
+            transition-duration: 0s !important;
+            transition-delay: 0s !important;
+        }
+        .board {
+            background: var(--board-bg);
+            border: 3px solid var(--board-border);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .component {
+            background: var(--component-bg);
+            border: 2px solid var(--component-border);
+            color: var(--text-primary);
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 500;
+        }
+        
+        .pin {
+            background-color: var(--pin-bg);
+            border: 2px solid var(--pin-border);
+            font-size: 9px;
+            font-weight: bold;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2px;
+            color: var(--text-primary);
+            min-width: 20px;
+            min-height: 16px;
+        }
+        
+        .header-block {
+            background-color: var(--header-bg);
+            border: 2px solid var(--pin-border);
+            border-radius: 4px;
+        }
+        
+        .header-block > span {
+            color: var(--text-primary);
+            font-weight: bold;
+            font-size: 9px;
+        }
+        
+        .wire {
+            stroke-width: 4;
+            pointer-events: none;
+            fill: none;
+            opacity: 1;
+        }
+        
+        .wire-label {
+            font-size: 12px;
+            font-family: 'Arial', sans-serif;
+            fill: var(--text-primary);
+            font-weight: bold;
+            pointer-events: none;
+        }
+        
+        .pin span {
+            color: var(--text-primary);
+            font-weight: bold;
+        }
+
+        /* High contrast for better screenshot quality */
+        .component p {
+            margin: 2px 0;
+            font-weight: 600;
+        }
+
+        .component .text-xs {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        /* Ensure consistent sizing for screenshot */
+        #schematic-container {
+            width: 1200px;
+            height: 800px;
+            background: white;
+            border: 3px solid #dee2e6;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+            }
+            
+            #schematic-container {
+                width: 100%;
+                height: 600px;
+            }
+            
+            .component {
+                font-size: 11px;
+            }
+            
+            .pin {
+                font-size: 8px;
+            }
+            
+            .wire-label {
+                font-size: 10px;
+            }
+        }
+
+        /* Print optimization */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                background: white !important;
+            }
+            
+            #schematic-container {
+                width: 100% !important;
+                height: auto !important;
+                border: none !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+            }
+            
+            .wire {
+                stroke-width: 3;
+            }
+        }
+
+        /* Remove all animations for screenshot consistency */
+        .component, .board {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: absolute;
+            background: #2d3748;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #2d3748;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-black">Desain Skematik Rangkaian</h1>
+            <p class="text-gray-600 mt-2">Berdasarkan file `gas-v2.ino` (Hanya Jalur Sinyal)</p>
+            
+            <!-- Legend -->
+            <div class="mt-6 flex flex-wrap justify-center gap-4 text-sm">
+                <div class="flex items-center gap-2">
+                    <div class="w-4 h-1" style="background-color: #2C7A7B;"></div>
+                    <span>SPI Interface</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-4 h-1" style="background-color: #B7791F;"></div>
+                    <span>I2C Interface</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-4 h-1" style="background-color: #2B6CB0;"></div>
+                    <span>Digital I/O</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-4 h-1" style="background-color: #97266D;"></div>
+                    <span>Analog Input</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-4 h-1" style="background-color: #2F855A;"></div>
+                    <span>Sensor DHT11</span>
+                </div>
+            </div>
+        </header>
+
+        <div id="schematic-container" class="relative mx-auto bg-white rounded-lg p-6 border-2 border-gray-300" style="width: 1200px; height: 800px;" role="img" aria-label="Arduino Mega 2560 schematic diagram with connected components">
+            <svg id="svg-canvas" class="absolute top-0 left-0 w-full h-full" aria-hidden="true"></svg>
+            
+            <!-- Arduino Mega -->
+            <div id="arduino-mega" data-group="board" class="absolute board rounded-lg w-80 h-48" style="left: 50%; top: 50%; transform: translate(-50%, -50%);">
+                <div class="absolute top-2 left-1/2 -translate-x-1/2 text-white font-bold text-lg">ARDUINO MEGA 2560</div>
+                
+                <!-- Pin Headers -->
+                <div class="absolute top-0 -mt-7 w-full flex justify-center px-2">
+                    <div id="digital-pins-1" data-group="digital" class="header-block rounded-sm p-0.5 flex items-center space-x-px">
+                        <span class="text-[8px] mr-2">DIGITAL</span>
+                         <div id="pin-46" class="pin w-4 h-3" data-label="46"></div>
+                         <div id="pin-48" class="pin w-4 h-3" data-label="48"></div>
+                         <div id="pin-49" class="pin w-4 h-3" data-label="49"></div>
+                         <div id="pin-50" class="pin w-4 h-3" data-label="50"></div>
+                         <div id="pin-51" class="pin w-4 h-3" data-label="51"></div>
+                         <div id="pin-52" class="pin w-4 h-3" data-label="52"></div>
+                         <div id="pin-53" class="pin w-4 h-3" data-label="53"></div>
+                    </div>
+                </div>
+
+                 <div class="absolute top-0 -mt-4 w-full flex justify-end px-2" style="right: -80px;">
+                    <div id="comm-pins" data-group="comm" class="header-block rounded-sm p-1 flex flex-col items-center space-y-1">
+                        <span class="text-[8px] mb-1">COMM</span>
+                         <div id="pin-20" class="pin w-6 h-4" data-label="SDA"></div>
+                         <div id="pin-21" class="pin w-6 h-4" data-label="SCL"></div>
+                    </div>
+                </div>
+
+                <div class="absolute bottom-0 -mb-4 w-full flex justify-end px-2">
+                    <div id="analog-pins" data-group="analog" class="header-block rounded-sm p-0.5 flex items-center space-x-px">
+                         <span class="text-[8px] mr-1">ANALOG</span>
+                         <div id="pin-a0" class="pin w-4 h-3" data-label="A0"></div>
+                         <div id="pin-a1" class="pin w-4 h-3" data-label="A1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Components -->
+            <div id="dht11" data-wire-to="pin-46" class="component absolute rounded-md p-2 w-28 text-center" style="top: 5%; left: 10%;">
+                <p class="text-sm font-bold">DHT11</p>
+                <p class="text-xs text-gray-600">Suhu & Kelembapan</p>
+            </div>
+             <div id="buttons" class="component absolute rounded-md p-2 w-32 text-center" style="top: 5%; left: 42%;">
+                <p class="text-sm font-bold">Tombol</p>
+                 <div id="cal-button" data-wire-to="pin-49" class="text-xs text-gray-600">Kalibrasi</div>
+                 <div id="msr-button" data-wire-to="pin-48" class="text-xs text-gray-600">Pengukuran</div>
+            </div>
+            <div id="sd-card" data-wire-to="pin-53,pin-52,pin-51,pin-50" class="component absolute rounded-md p-2 w-28 text-center" style="top: 5%; left: 75%;">
+                <p class="text-sm font-bold">SD Card Module</p>
+                <p class="text-xs text-gray-600">SPI Interface</p>
+            </div>
+             <div id="oled" data-wire-to="pin-20,pin-21" class="component absolute rounded-md p-2 w-28 text-center" style="top: 30%; left: 5%;">
+                <p class="text-sm font-bold">OLED SSD1306</p>
+                <p class="text-xs text-gray-600">I2C Display</p>
+            </div>
+            <div id="rtc" data-wire-to="pin-20,pin-21" class="component absolute rounded-md p-2 w-28 text-center" style="top: 30%; left: 80%;">
+                <p class="text-sm font-bold">RTC DS3231</p>
+                <p class="text-xs text-gray-600">I2C Clock</p>
+            </div>
+            <div id="mq135" data-wire-to="pin-a0" class="component absolute rounded-md p-2 w-28 text-center" style="top: 85%; left: 15%;">
+                <p class="text-sm font-bold">MQ-135</p>
+                <p class="text-xs text-gray-600">Sensor CO2</p>
+            </div>
+            <div id="mq136" data-wire-to="pin-a1" class="component absolute rounded-md p-2 w-28 text-center" style="top: 85%; left: 90%;">
+                <p class="text-sm font-bold">MQ-136</p>
+                <p class="text-xs text-gray-600">Sensor H2S</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration constants
+        const CONFIG = {
+            wireColors: {
+                '53': '#2C7A7B', '52': '#2C7A7B', '51': '#2C7A7B', '50': '#2C7A7B', // SPI Teal
+                '49': '#2B6CB0', '48': '#2B6CB0', // Buttons Blue
+                '46': '#2F855A', // DHT11 Green
+                'A0': '#97266D', 'A1': '#97266D', // Sensors Pink
+                '20': '#B7791F', '21': '#B7791F', // I2C Orange
+                'SDA': '#B7791F', 'SCL': '#B7791F' // I2C Orange (pin labels)
+            },
+            tooltips: {
+                'dht11': 'Sensor untuk mengukur suhu dan kelembapan udara',
+                'buttons': 'Tombol untuk kalibrasi dan pengukuran manual',
+                'sd-card': 'Modul SD Card untuk menyimpan data',
+                'oled': 'Display OLED untuk menampilkan informasi',
+                'rtc': 'Real Time Clock untuk timestamp data',
+                'mq135': 'Sensor gas CO2 dan polutan udara',
+                'mq136': 'Sensor gas H2S (hidrogen sulfida)'
+            }
+        };
+
+        class SchematicDiagram {
+            constructor() {
+                this.svg = document.getElementById('svg-canvas');
+                this.container = document.getElementById('schematic-container');
+                this.tooltip = null;
+                this.init();
+            }
+
+            init() {
+                this.createTooltip();
+                this.initializePins();
+                this.drawWires();
+                this.addEventListeners();
+            }
+
+            createTooltip() {
+                this.tooltip = document.createElement('div');
+                this.tooltip.className = 'tooltip';
+                document.body.appendChild(this.tooltip);
+            }
+
+            initializePins() {
+                const pins = document.querySelectorAll('.pin');
+                pins.forEach(pin => {
+                    if (!pin.querySelector('span')) {
+                        const label = document.createElement('span');
+                        label.className = 'pointer-events-none';
+                        label.textContent = pin.dataset.label;
+                        pin.appendChild(label);
+                    }
+                });
+            }
+
+            getElementCoords(element) {
+                const containerRect = this.container.getBoundingClientRect();
+                const elemRect = element.getBoundingClientRect();
+                return {
+                    x: elemRect.left - containerRect.left + elemRect.width / 2,
+                    y: elemRect.top - containerRect.top + elemRect.height / 2
+                };
+            }
+
+            drawWires() {
+                this.svg.innerHTML = '';
+                const elementsToWire = document.querySelectorAll('[data-wire-to]');
+                
+                elementsToWire.forEach(el => {
+                    const targets = el.dataset.wireTo.split(',');
+                    targets.forEach(targetId => {
+                        const targetPin = document.getElementById(targetId.trim());
+                        if (targetPin) {
+                            this.drawWire(el, targetPin);
+                        }
+                    });
+                });
+            }
+
+            drawWire(sourceEl, destEl) {
+                const sourceCoords = this.getElementCoords(sourceEl);
+                const destCoords = this.getElementCoords(destEl);
+                const pinLabel = destEl.dataset.label;
+                const color = CONFIG.wireColors[pinLabel] || CONFIG.wireColors['default'] || '#1A202C';
+                
+                // Create curved path
+                const pathData = `M ${sourceCoords.x} ${sourceCoords.y} C ${sourceCoords.x} ${destCoords.y}, ${destCoords.x} ${sourceCoords.y}, ${destCoords.x} ${destCoords.y}`;
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', pathData);
+                path.setAttribute('stroke', color);
+                path.classList.add('wire');
+                this.svg.appendChild(path);
+
+                // Add wire label with better contrast for screenshots
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                const pathLength = path.getTotalLength();
+                const midPoint = path.getPointAtLength(pathLength / 2);
+
+                // Adjust label position for SDA/SCL to prevent overlapping
+                if (pinLabel === 'SDA') {
+                    text.setAttribute('x', midPoint.x - 15);
+                    text.setAttribute('y', midPoint.y - 5);
+                    text.setAttribute('text-anchor', 'end');
+                } else if (pinLabel === 'SCL') {
+                    text.setAttribute('x', midPoint.x - 15);
+                    text.setAttribute('y', midPoint.y + 15);
+                    text.setAttribute('text-anchor', 'end');
+                } else if (pinLabel === '50') {
+                    text.setAttribute('x', midPoint.x - 20);
+                    text.setAttribute('y', midPoint.y - 10);
+                    text.setAttribute('text-anchor', 'middle');
+                } else if (pinLabel === '51') {
+                    text.setAttribute('x', midPoint.x - 10);
+                    text.setAttribute('y', midPoint.y - 15);
+                    text.setAttribute('text-anchor', 'middle');
+                } else if (pinLabel === '52') {
+                    text.setAttribute('x', midPoint.x + 10);
+                    text.setAttribute('y', midPoint.y - 10);
+                    text.setAttribute('text-anchor', 'middle');
+                } else if (pinLabel === '53') {
+                    text.setAttribute('x', midPoint.x + 20);
+                    text.setAttribute('y', midPoint.y - 15);
+                    text.setAttribute('text-anchor', 'middle');
+                } else {
+                    text.setAttribute('x', midPoint.x + 5);
+                    text.setAttribute('y', midPoint.y);
+                    text.setAttribute('text-anchor', 'start');
+                }
+
+                text.classList.add('wire-label');
+                text.textContent = pinLabel;
+                
+                // Enhanced text styling for screenshot clarity
+                text.style.stroke = "white";
+                text.style.strokeWidth = "3px";
+                text.style.paintOrder = "stroke";
+                text.style.fontWeight = "bold";
+                text.style.fontSize = "12px";
+                
+                this.svg.appendChild(text);
+            }
+
+            showTooltip(event, content) {
+                this.tooltip.textContent = content;
+                this.tooltip.style.left = `${event.pageX + 10}px`;
+                this.tooltip.style.top = `${event.pageY - 30}px`;
+                this.tooltip.style.opacity = '1';
+            }
+
+            hideTooltip() {
+                this.tooltip.style.opacity = '0';
+            }
+
+            addEventListeners() {
+                // Component tooltips
+                Object.keys(CONFIG.tooltips).forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.addEventListener('mouseenter', (e) => {
+                            this.showTooltip(e, CONFIG.tooltips[id]);
+                        });
+                        element.addEventListener('mouseleave', () => {
+                            this.hideTooltip();
+                        });
+                        element.addEventListener('mousemove', (e) => {
+                            this.tooltip.style.left = `${e.pageX + 10}px`;
+                            this.tooltip.style.top = `${e.pageY - 30}px`;
+                        });
+                    }
+                });
+
+                // Resize handler with debouncing
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => this.drawWires(), 100);
+                });
+
+                // Keyboard navigation support
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Tab') {
+                        // Ensure focusable elements are properly highlighted
+                        const components = document.querySelectorAll('.component');
+                        components.forEach(comp => comp.setAttribute('tabindex', '0'));
+                    }
+                });
+            }
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new SchematicDiagram();
+        });
+    </script>
+</body>
+</html>
+
