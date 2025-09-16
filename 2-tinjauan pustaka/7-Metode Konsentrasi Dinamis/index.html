@@ -59,10 +59,24 @@
                 <!-- In-situ Probe -->
                 <g id="probe-group">
                     <rect x="200" y="200" width="20" height="250" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
-                    <!-- Lubang-lubang di probe -->
+                    
+                    <!-- Air Inlet at the top of probe -->
+                    <rect x="190" y="180" width="40" height="20" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
+                    <path d="M 190 190 L 230 190" fill="none" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2,2"/>
+                    
+                    <!-- Air Inlet Label and Arrow -->
+                    <text x="130" y="175" font-size="14" text-anchor="end" fill="#1f2937" font-weight="600">Air Inlet</text>
+                    <path d="M 130 175 L 190 190" fill="none" stroke="#1f2937" stroke-width="1" marker-end="url(#arrowhead)"/>
+                    
+                    <!-- Air Flow to Inlet -->
+                    <path d="M 180 160 Q 190 175, 205 182" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead)"/>
+                    <path d="M 240 160 Q 230 175, 215 182" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead)"/>
+                    
+                    <!-- Existing probe elements -->
                     <circle cx="210" cy="430" r="3" fill="#9ca3af"/>
                     <circle cx="210" cy="415" r="3" fill="#9ca3af"/>
                     <circle cx="210" cy="400" r="3" fill="#9ca3af"/>
+                    <circle cx="210" cy="385" r="3" fill="#9ca3af"/>
                     <text x="190" y="320" font-size="18" text-anchor="end" fill="#1f2937" font-weight="600" transform="rotate(-90, 190, 320)">In-situ Probe</text>
                     <!-- Garis kedalaman -->
                     <line x1="230" y1="200" x2="230" y2="450" stroke="black" stroke-dasharray="4" />
@@ -100,6 +114,7 @@
                     <path d="M 270 400 Q 240 410 213 415" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead)"/>
                     <path d="M 160 440 Q 185 435 207 430" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead)"/>
                     <text x="150" y="460" font-size="14" fill="#1e3a8a">Gas tanah dihisap secara aktif</text>
+                    <text x="150" y="480" font-size="14" fill="#1e3a8a">bersama dengan udara dari air inlet</text>
                 </g>
 
             </svg>
@@ -108,7 +123,7 @@
         <!-- Teks Anotasi Bawah -->
         <footer class="mt-4 text-center">
             <p class="text-gray-600 italic">
-                Mengukur konsentrasi gas dalam aliran yang stabil setelah dihisap dari kedalaman tanah tertentu.
+                Mengukur konsentrasi gas dalam aliran yang stabil setelah dihisap dari kedalaman tanah tertentu dan udara dari air inlet.
             </p>
         </footer>
 
