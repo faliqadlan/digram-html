@@ -204,18 +204,18 @@
 <body class="p-4 md:p-8">
     <div class="max-w-7xl mx-auto">
         <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-black">Desain Skematik Rangkaian</h1>
-            <p class="text-gray-600 mt-2">Berdasarkan file `gas-v2.ino` (Hanya Jalur Sinyal)</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-black">Diagram Skematik Rangkaian Elektronik</h1>
+            <p class="text-gray-600 mt-2">Sistem Monitoring Gas dengan Arduino Mega 2560</p>
             
             <!-- Legend -->
             <div class="mt-6 flex flex-wrap justify-center gap-4 text-sm">
                 <div class="flex items-center gap-2">
                     <div class="w-4 h-1" style="background-color: #2C7A7B;"></div>
-                    <span>SPI Interface</span>
+                    <span>SPI Bus</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <div class="w-4 h-1" style="background-color: #B7791F;"></div>
-                    <span>I2C Interface</span>
+                    <span>I2C Bus</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <div class="w-4 h-1" style="background-color: #2B6CB0;"></div>
@@ -226,13 +226,17 @@
                     <span>Analog Input</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <div class="w-4 h-1" style="background-color: #2F855A;"></div>
-                    <span>Sensor DHT11</span>
+                    <div class="w-4 h-1" style="background-color: #DC2626;"></div>
+                    <span>Power 12V</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-4 h-1" style="background-color: #059669;"></div>
+                    <span>Power 5V/GND</span>
                 </div>
             </div>
         </header>
 
-        <div id="schematic-container" class="relative mx-auto bg-white rounded-lg p-6 border-2 border-gray-300" style="width: 1200px; height: 800px;" role="img" aria-label="Arduino Mega 2560 schematic diagram with connected components">
+        <div id="schematic-container" class="relative mx-auto bg-white rounded-lg p-6 border-2 border-gray-300" style="width: 1400px; height: 1000px;" role="img" aria-label="Arduino Mega 2560 complete electronic schematic diagram">
             <svg id="svg-canvas" class="absolute top-0 left-0 w-full h-full" aria-hidden="true"></svg>
             
             <!-- Arduino Mega -->
@@ -243,6 +247,7 @@
                 <div class="absolute top-0 -mt-7 w-full flex justify-center px-2">
                     <div id="digital-pins-1" data-group="digital" class="header-block rounded-sm p-0.5 flex items-center space-x-px">
                         <span class="text-[8px] mr-2">DIGITAL</span>
+                         <div id="pin-26" class="pin w-4 h-3" data-label="26"></div>
                          <div id="pin-46" class="pin w-4 h-3" data-label="46"></div>
                          <div id="pin-48" class="pin w-4 h-3" data-label="48"></div>
                          <div id="pin-49" class="pin w-4 h-3" data-label="49"></div>
@@ -250,6 +255,15 @@
                          <div id="pin-51" class="pin w-4 h-3" data-label="51"></div>
                          <div id="pin-52" class="pin w-4 h-3" data-label="52"></div>
                          <div id="pin-53" class="pin w-4 h-3" data-label="53"></div>
+                    </div>
+                </div>
+
+                <div class="absolute left-0 -ml-7 top-1/2 -translate-y-1/2">
+                    <div id="power-pins" data-group="power" class="header-block rounded-sm p-1 flex flex-col items-center space-y-1">
+                        <span class="text-[8px] mb-1">POWER</span>
+                         <div id="pin-5v" class="pin w-6 h-4" data-label="5V"></div>
+                         <div id="pin-gnd" class="pin w-6 h-4" data-label="GND"></div>
+                         <div id="pin-vin" class="pin w-6 h-4" data-label="VIN"></div>
                     </div>
                 </div>
 
@@ -271,34 +285,71 @@
             </div>
 
             <!-- Components -->
-            <div id="dht11" data-wire-to="pin-46" class="component absolute rounded-md p-2 w-28 text-center" style="top: 5%; left: 10%;">
+            <!-- Input Sensors (Top Row) -->
+            <div id="dht11" data-wire-to="pin-46" class="component absolute rounded-md p-2 w-28 text-center" style="top: 8%; left: 8%;">
                 <p class="text-sm font-bold">DHT11</p>
                 <p class="text-xs text-gray-600">Suhu & Kelembapan</p>
+                <div class="text-[10px] text-gray-500 mt-1">Pin 46</div>
             </div>
-             <div id="buttons" class="component absolute rounded-md p-2 w-32 text-center" style="top: 5%; left: 42%;">
-                <p class="text-sm font-bold">Tombol</p>
-                 <div id="cal-button" data-wire-to="pin-49" class="text-xs text-gray-600">Kalibrasi</div>
-                 <div id="msr-button" data-wire-to="pin-48" class="text-xs text-gray-600">Pengukuran</div>
+
+            <div id="buttons" class="component absolute rounded-md p-2 w-32 text-center" style="top: 8%; left: 35%;">
+                <p class="text-sm font-bold">Push Buttons</p>
+                <div id="cal-button" data-wire-to="pin-49" class="text-xs text-gray-600">Kalibrasi (Pin 49)</div>
+                <div id="msr-button" data-wire-to="pin-48" class="text-xs text-gray-600">Pengukuran (Pin 48)</div>
             </div>
-            <div id="sd-card" data-wire-to="pin-53,pin-52,pin-51,pin-50" class="component absolute rounded-md p-2 w-28 text-center" style="top: 5%; left: 75%;">
-                <p class="text-sm font-bold">SD Card Module</p>
+
+            <!-- Data Storage (Top Right) -->
+            <div id="sd-card" data-wire-to="pin-53,pin-52,pin-51,pin-50" class="component absolute rounded-md p-2 w-32 text-center" style="top: 8%; right: 8%;">
+                <p class="text-sm font-bold">MicroSD Card</p>
                 <p class="text-xs text-gray-600">SPI Interface</p>
+                <div class="text-[10px] text-gray-500 mt-1">CS:53 MOSI:51 MISO:50 SCK:52</div>
             </div>
-             <div id="oled" data-wire-to="pin-20,pin-21" class="component absolute rounded-md p-2 w-28 text-center" style="top: 30%; left: 5%;">
-                <p class="text-sm font-bold">OLED SSD1306</p>
-                <p class="text-xs text-gray-600">I2C Display</p>
+
+            <!-- I2C Devices (Left Side) -->
+            <div id="oled" data-wire-to="pin-20,pin-21" class="component absolute rounded-md p-2 w-28 text-center" style="top: 35%; left: 4%;">
+                <p class="text-sm font-bold">OLED Display</p>
+                <p class="text-xs text-gray-600">SSD1306 I2C</p>
+                <div class="text-[10px] text-gray-500 mt-1">SDA:20 SCL:21</div>
             </div>
-            <div id="rtc" data-wire-to="pin-20,pin-21" class="component absolute rounded-md p-2 w-28 text-center" style="top: 30%; left: 80%;">
-                <p class="text-sm font-bold">RTC DS3231</p>
-                <p class="text-xs text-gray-600">I2C Clock</p>
+
+            <div id="rtc" data-wire-to="pin-20,pin-21" class="component absolute rounded-md p-2 w-28 text-center" style="top: 55%; left: 4%;">
+                <p class="text-sm font-bold">RTC Module</p>
+                <p class="text-xs text-gray-600">DS3231 I2C</p>
+                <div class="text-[10px] text-gray-500 mt-1">SDA:20 SCL:21</div>
             </div>
-            <div id="mq135" data-wire-to="pin-a0" class="component absolute rounded-md p-2 w-28 text-center" style="top: 85%; left: 15%;">
+
+            <!-- Power and Control (Right Side) -->
+            <div id="relay-module" data-wire-to="pin-26,pin-5v,pin-gnd" class="component absolute rounded-md p-2 w-32 text-center" style="top: 35%; right: 4%;">
+                <p class="text-sm font-bold">Relay 5V</p>
+                <p class="text-xs text-gray-600">Control Module</p>
+                <div class="text-[10px] text-gray-500 mt-1">IN:26 VCC:5V GND</div>
+            </div>
+
+            <!-- External Power Supply -->
+            <div id="power-supply" class="component absolute rounded-md p-2 w-28 text-center" style="top: 55%; right: 4%;">
+                <p class="text-sm font-bold">Power Supply</p>
+                <p class="text-xs text-gray-600">12V External</p>
+                <div class="text-[10px] text-gray-500 mt-1">Battery/Adapter</div>
+            </div>
+
+            <!-- Pump (Bottom Right) -->
+            <div id="pump" class="component absolute rounded-md p-2 w-28 text-center" style="top: 75%; right: 4%;">
+                <p class="text-sm font-bold">Pump</p>
+                <p class="text-xs text-gray-600">Diafragma 12V</p>
+                <div class="text-[10px] text-gray-500 mt-1">Via Relay</div>
+            </div>
+
+            <!-- Gas Sensors (Bottom Row) -->
+            <div id="mq135" data-wire-to="pin-a0,pin-5v,pin-gnd" class="component absolute rounded-md p-2 w-28 text-center" style="top: 85%; left: 20%;">
                 <p class="text-sm font-bold">MQ-135</p>
                 <p class="text-xs text-gray-600">Sensor CO2</p>
+                <div class="text-[10px] text-gray-500 mt-1">A0, VCC:5V, GND</div>
             </div>
-            <div id="mq136" data-wire-to="pin-a1" class="component absolute rounded-md p-2 w-28 text-center" style="top: 85%; left: 90%;">
+
+            <div id="mq136" data-wire-to="pin-a1,pin-5v,pin-gnd" class="component absolute rounded-md p-2 w-28 text-center" style="top: 85%; right: 20%;">
                 <p class="text-sm font-bold">MQ-136</p>
                 <p class="text-xs text-gray-600">Sensor H2S</p>
+                <div class="text-[10px] text-gray-500 mt-1">A1, VCC:5V, GND</div>
             </div>
         </div>
     </div>
@@ -308,20 +359,24 @@
         const CONFIG = {
             wireColors: {
                 '53': '#2C7A7B', '52': '#2C7A7B', '51': '#2C7A7B', '50': '#2C7A7B', // SPI Teal
-                '49': '#2B6CB0', '48': '#2B6CB0', // Buttons Blue
+                '49': '#2B6CB0', '48': '#2B6CB0', '26': '#2B6CB0', // Digital Blue
                 '46': '#2F855A', // DHT11 Green
-                'A0': '#97266D', 'A1': '#97266D', // Sensors Pink
+                'A0': '#97266D', 'A1': '#97266D', // Analog Pink
                 '20': '#B7791F', '21': '#B7791F', // I2C Orange
-                'SDA': '#B7791F', 'SCL': '#B7791F' // I2C Orange (pin labels)
+                'SDA': '#B7791F', 'SCL': '#B7791F', // I2C Orange (pin labels)
+                '5V': '#059669', 'GND': '#059669', 'VIN': '#DC2626' // Power lines
             },
             tooltips: {
-                'dht11': 'Sensor untuk mengukur suhu dan kelembapan udara',
-                'buttons': 'Tombol untuk kalibrasi dan pengukuran manual',
-                'sd-card': 'Modul SD Card untuk menyimpan data',
-                'oled': 'Display OLED untuk menampilkan informasi',
-                'rtc': 'Real Time Clock untuk timestamp data',
-                'mq135': 'Sensor gas CO2 dan polutan udara',
-                'mq136': 'Sensor gas H2S (hidrogen sulfida)'
+                'dht11': 'Sensor suhu dan kelembapan DHT11 - Pin digital 46',
+                'buttons': 'Tombol kalibrasi (Pin 49) dan pengukuran (Pin 48) dengan INPUT_PULLUP',
+                'sd-card': 'MicroSD Card dengan interface SPI - CS:53, MOSI:51, MISO:50, SCK:52',
+                'oled': 'Display OLED SSD1306 dengan interface I2C - SDA:20, SCL:21',
+                'rtc': 'Real Time Clock DS3231 dengan interface I2C - SDA:20, SCL:21',
+                'relay-module': 'Modul Relay 5V untuk kontrol pompa - IN:26, VCC:5V, GND',
+                'power-supply': 'Catu daya eksternal 12V untuk pompa diafragma',
+                'pump': 'Pompa diafragma 12V dikontrol melalui relay',
+                'mq135': 'Sensor gas CO2 MQ-135 - Analog A0, VCC:5V, GND',
+                'mq136': 'Sensor gas H2S MQ-136 - Analog A1, VCC:5V, GND'
             }
         };
 
