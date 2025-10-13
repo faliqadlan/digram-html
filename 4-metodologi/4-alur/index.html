@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagram Alir Metodologi Penelitian</title>
+    <!-- Mengimpor font Inter dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Reset dan Pengaturan Dasar Body */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Helvetica', Arial, sans-serif;
+            background-color: #ffffff; /* White background for clean screenshots */
+            color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Kontainer Utama untuk Diagram Alir */
+        .flowchart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            max-width: 100%;
+            background-color: #ffffff;
+        }
+
+        /* Styling Umum untuk semua Kotak Proses */
+        .flowchart-process {
+            padding: 18px 30px;
+            background-color: #ffffff;
+            border: 2px solid #3498db;
+            border-radius: 12px;
+            text-align: center;
+            width: 320px;
+            max-width: 90%;
+            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.15);
+            font-weight: 500;
+            font-size: 15px;
+            color: #2c3e50;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            line-height: 1.4;
+        }
+
+        /* Styling Khusus untuk Terminator (Mulai/Selesai) */
+        .flowchart-terminator {
+            padding: 20px 40px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border: none;
+            border-radius: 50px;
+            text-align: center;
+            width: 200px;
+            max-width: 90%;
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+            font-weight: 700;
+            font-size: 16px;
+            color: #ffffff;
+            box-sizing: border-box;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Styling untuk Panah Konektor */
+        .flowchart-arrow {
+            position: relative;
+            height: 35px;
+            width: 3px;
+            background-color: #3498db;
+            margin: 8px 0;
+        }
+
+        /* Membuat Kepala Panah */
+        .flowchart-arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            border-bottom: 3px solid #3498db;
+            border-right: 3px solid #3498db;
+            transform: translateX(-50%) rotate(45deg);
+        }
+
+        /* Icon styling */
+        .process-icon {
+            font-size: 18px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        /* Hover effects for better interactivity during screenshot prep */
+        .flowchart-process:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.25);
+        }
+
+        .flowchart-terminator:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(52, 152, 219, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="flowchart-container">
+        <!-- Elemen Mulai -->
+        <div class="flowchart-terminator">MULAI</div>
+        <div class="flowchart-arrow"></div>
+
+        <!-- Tahapan Proses -->
+        <div class="flowchart-process">
+            <span class="process-icon">📚</span>Studi Literatur
+        </div>
+        <div class="flowchart-arrow"></div>
+        
+        <div class="flowchart-process">
+            <span class="process-icon">🔧</span>Perancangan &<br>Implementasi Purwarupa
+        </div>
+        <div class="flowchart-arrow"></div>
+
+        <div class="flowchart-process">
+            <span class="process-icon">🔬</span>Pengujian & Kalibrasi<br>Sistem
+        </div>
+        <div class="flowchart-arrow"></div>
+
+        <div class="flowchart-process">
+            <span class="process-icon">📊</span>Akuisisi Data Lapangan
+        </div>
+        <div class="flowchart-arrow"></div>
+
+        <div class="flowchart-process">
+            <span class="process-icon">🔍</span>Pengolahan & Analisis Data
+        </div>
+        <div class="flowchart-arrow"></div>
+        
+        <div class="flowchart-process">
+            <span class="process-icon">📋</span>Interpretasi Data
+        </div>
+        <div class="flowchart-arrow"></div>
+
+        <div class="flowchart-process">
+            <span class="process-icon">✅</span>Kesimpulan & Saran
+        </div>
+        <div class="flowchart-arrow"></div>
+
+        <!-- Elemen Selesai -->
+        <div class="flowchart-terminator">SELESAI</div>
+    </div>
+
+</body>
+</html>
