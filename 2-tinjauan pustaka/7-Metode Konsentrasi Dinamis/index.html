@@ -26,14 +26,6 @@
 <body class="bg-gray-50 flex items-center justify-center min-h-screen p-4">
 
     <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg max-w-4xl w-full border border-gray-200">
-        
-        <!-- Judul Diagram -->
-        <h1 class="text-xl md:text-2xl font-bold text-center text-gray-800 mb-2">
-            Diagram 2: Metode Konsentrasi Dinamis (Dynamic Concentration Method)
-        </h1>
-        <p class="text-center text-gray-500 mb-6 md:mb-8">
-            Visualisasi pengukuran gas *in-situ* dengan metode pemompaan aktif.
-        </p>
 
         <!-- Kontainer Utama untuk Diagram -->
         <div class="relative w-full aspect-[4/3] bg-white rounded-lg p-4 border border-gray-200">
@@ -67,10 +59,6 @@
                     <!-- Air Inlet Label and Arrow -->
                     <text x="130" y="175" font-size="14" text-anchor="end" fill="#1f2937" font-weight="600">Air Inlet</text>
                     <path d="M 130 175 L 190 190" fill="none" stroke="#1f2937" stroke-width="1" marker-end="url(#arrowhead)"/>
-                    
-                    <!-- Air Flow to Inlet -->
-                    <path d="M 180 160 Q 190 175, 205 182" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead)"/>
-                    <path d="M 240 160 Q 230 175, 215 182" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead)"/>
                     
                     <!-- Existing probe elements -->
                     <circle cx="210" cy="430" r="3" fill="#9ca3af"/>
@@ -110,22 +98,12 @@
 
                 <!-- Aliran Gas dari Tanah -->
                 <g id="gas-intake-flow">
-                    <path d="M 150 400 Q 180 410 207 415" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead)"/>
-                    <path d="M 270 400 Q 240 410 213 415" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead)"/>
-                    <path d="M 160 440 Q 185 435 207 430" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead)"/>
                     <text x="150" y="460" font-size="14" fill="#1e3a8a">Gas tanah dihisap secara aktif</text>
                     <text x="150" y="480" font-size="14" fill="#1e3a8a">bersama dengan udara dari air inlet</text>
                 </g>
 
             </svg>
         </div>
-        
-        <!-- Teks Anotasi Bawah -->
-        <footer class="mt-4 text-center">
-            <p class="text-gray-600 italic">
-                Mengukur konsentrasi gas dalam aliran yang stabil setelah dihisap dari kedalaman tanah tertentu dan udara dari air inlet.
-            </p>
-        </footer>
 
     </div>
 
